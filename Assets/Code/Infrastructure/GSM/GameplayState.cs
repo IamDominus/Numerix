@@ -1,23 +1,19 @@
 ﻿using Code.Infrastructure.FSM;
-using Code.Services;
 
 namespace Code.Infrastructure.GSM
 {
     public class GameplayState : IState
     {
-        private readonly IInputService _inputService;
-        private readonly BlockService _blockService;
+        private readonly IPlayerTurnService _playerTurnService;
 
-        public GameplayState(IInputService inputService, BlockService blockService)
+        public GameplayState(IPlayerTurnService playerTurnService)
         {
-            _inputService = inputService;
-            _blockService = blockService;
+            _playerTurnService = playerTurnService;
         }
 
         public void Enter()
         {
-            _inputService.SetEnabled(true);
-            _blockService.Start();
+            _playerTurnService.Start();
         }
 
         public void Exit()

@@ -1,6 +1,7 @@
 ﻿using Code.Infrastructure.Factories;
 using Code.Infrastructure.FSM;
 using Code.Infrastructure.GSM;
+using Code.Logic;
 using Code.Providers;
 using Code.Services;
 using Zenject;
@@ -19,8 +20,10 @@ namespace Code.Infrastructure.Installers
             Container.BindInterfacesTo<BlockPositionProvider>().AsSingle();
             Container.BindInterfacesTo<SpawnService>().AsSingle();
             Container.BindInterfacesTo<GameFactory>().AsSingle();
-            Container.BindInterfacesAndSelfTo<BlockService>().AsSingle();
-            Container.BindInterfacesAndSelfTo<BlockViewService>().AsSingle();
+            Container.BindInterfacesTo<BlocksService>().AsSingle();
+            Container.BindInterfacesTo<PlayerTurnService>().AsSingle();
+            Container.BindInterfacesTo<BlocksValidationService>().AsSingle();
+            Container.Bind<Block>().AsTransient();
 
 
             BindGameStateMachine();

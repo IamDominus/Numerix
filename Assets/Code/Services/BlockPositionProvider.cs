@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Code.Logic;
 using Code.Providers;
 using Code.StaticData;
 using Code.Utils;
@@ -40,32 +39,37 @@ namespace Code.Services
 
             var yWorldOffset = x * (_levelData.CellSize.y + yOffset);
             var yWorld = fieldTopLeft.y - _levelData.CellSize.y / 2 - yOffset - yWorldOffset;
-            
+
             return new Vector2(xWorld, yWorld);
         }
 
-        public bool TryGetBlockRandomPosition(Block[,] blocks, out Vector2Int position)
+        public Vector2 GetBlockInWorldPosition(Vector2Int position)
         {
-            var nullIndices = new List<Vector2Int>();
+            return GetBlockInWorldPosition(position.x, position.y);
+        }
 
-            for (var x = 0; x < blocks.GetLength(0); x++)
+        public bool TryGetRandomPosition<T>(T[,] array, out Vector2Int position)
+        {
+            var nullIndexes = new List<Vector2Int>();
+
+            for (var x = 0; x < array.GetLength(0); x++)
             {
-                for (var y = 0; y < blocks.GetLength(1); y++)
+                for (var y = 0; y < array.GetLength(1); y++)
                 {
-                    if (blocks[x, y] == null)
+                    if (array[x, y] == null)
                     {
-                        nullIndices.Add(new Vector2Int(x, y));
+                        nullIndexes.Add(new Vector2Int(x, y));
                     }
                 }
             }
 
-            if (nullIndices.Count > 0)
+            if (nullIndexes.Count > 0)
             {
-                position = nullIndices[_random.Next(nullIndices.Count)];
+                position = nullIndexes[_random.Next(nullIndexes.Count)];
                 return true;
             }
 
-            position = Vector2IntUtils.EMPTY;
+            position = VectorUtils.EMPTY;
             return false;
         }
     }

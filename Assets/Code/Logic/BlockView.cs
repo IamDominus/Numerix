@@ -1,50 +1,55 @@
-﻿using DG.Tweening;
+﻿using Code.Services;
+using Code.Utils;
+using Cysharp.Threading.Tasks;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering;
+using Zenject;
 
 namespace Code.Logic
 {
     public class BlockView : MonoBehaviour
     {
-        [SerializeField] private TMP_Text _text;
         public long Value;
-        
-        private bool _merged;
-        private bool _moving;
 
-        public void SetValue(long value)
+        [SerializeField] private TMP_Text _text;
+
+        private IBlockPositionProvider _blockPositionProvider;
+        private bool _deleteAfterMove;
+
+        [Inject]
+        private void Construct(IBlockPositionProvider blockPositionProvider)
         {
-            Value = value;
+            _blockPositionProvider = blockPositionProvider;
             _text.text = Value.ToString();
         }
 
-        public void MoveTo(Vector2 position, bool deleteAfterMove)
+        public void Move(Vector2Int position, bool deleteAfterMove)
         {
-            _merged = deleteAfterMove;
-            _moving = true;
-            transform.DOMove(position, Constants.MOVE_ANIMATION_TIME_SEC).OnComplete(OnFinishedMoving);
+            _deleteAfterMove = deleteAfterMove;
+
+            var newPosition = _blockPositionProvider.GetBlockInWorldPosition(position);
+            transform.DOMove(newPosition, Constants.MOVE_ANIMATION_TIME_SEC).SetEase(Ease.InCubic).OnComplete(OnFinishedMoving);
         }
 
-        public void Delete()
+        public async UniTask Delete()
         {
-            if (_moving == false)
+            if (_deleteAfterMove)
             {
-                Destroy(gameObject, Constants.MOVE_ANIMATION_TIME_SEC);
+                return;
             }
-            else
-            {
-                _merged = true;
-            }
+
+            await UniTask.WaitForSeconds(Constants.MOVE_ANIMATION_TIME_SEC);
+            Destroy(gameObject);
         }
 
         private void OnFinishedMoving()
         {
-            if (_merged)
+            if (_deleteAfterMove)
             {
                 Destroy(gameObject);
             }
-
-            _moving = false;
         }
     }
 }

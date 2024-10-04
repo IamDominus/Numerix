@@ -7,16 +7,16 @@ using Zenject;
 
 namespace Code.Services
 {
-    public class SpawnService : ISpawnService, IInitializable, IBlockViewProvider
+    public class SpawnService : ISpawnService, IInitializable, IBlocksProvider
     {
-        public BlockView[,] Blocks => _blocks;
+        public Block[,] Blocks => _blocks;
 
         private readonly Transform _parent;
         private readonly IBlockPositionProvider _blockPositionProvider;
         private readonly IStaticDataProvider _staticDataProvider;
         private readonly IGameFactory _gameFactory;
         private LevelStaticData _staticData;
-        private BlockView[,] _blocks;
+        private Block[,] _blocks;
 
         public SpawnService(IGameObjectsProvider gameObjectsProvider, IBlockPositionProvider blockPositionProvider, IGameFactory gameFactory,
             IStaticDataProvider staticDataProvider)
@@ -30,7 +30,7 @@ namespace Code.Services
         public void Initialize()
         {
             _staticData = _staticDataProvider.GetLevelStaticData(Constants.DIMENSIONS);
-            _blocks = new BlockView[_staticData.Dimensions.x, _staticData.Dimensions.y];
+            _blocks = new Block[_staticData.Dimensions.x, _staticData.Dimensions.y];
         }
 
         public void SpawnCells(LevelStaticData staticData)
@@ -39,17 +39,42 @@ namespace Code.Services
             {
                 for (var y = 0; y < staticData.Dimensions.y; y++)
                 {
-                    // Debug.Log($"");
                     var position = _blockPositionProvider.GetBlockInWorldPosition(x, y);
                     _gameFactory.CreateCell(position, _parent, staticData.CellSize);
                 }
             }
         }
 
-        public void SpawnBlock(Vector2Int position, long value)
+        public void SpawnBlock(BlockModel blockModel)
         {
-            var wordPosition = _blockPositionProvider.GetBlockInWorldPosition(position.x, position.y);
-            _blocks[position.x, position.y] = _gameFactory.CreateBlock(wordPosition, _parent, _staticData.CellSize, value);
+            var wordPosition = _blockPositionProvider.GetBlockInWorldPosition(blockModel.Position.x, blockModel.Position.y);
+            var block = _gameFactory.CreateBlock(blockModel, wordPosition, _parent, _staticData.CellSize, blockModel.Value);
+            _blocks[blockModel.Position.x, blockModel.Position.y] = block;
+        }
+
+        public void SpawnRandomBlock()
+        {
+            if (_blockPositionProvider.TryGetRandomPosition(Blocks, out var position))
+            {
+                var blockModel = new BlockModel()
+                {
+                    Value = 2,
+                    Position = position
+                };
+
+                SpawnBlock(blockModel);
+            }
+        }
+
+        public BlockView SpawnBlockView(BlockModel blockModel)
+        {
+            var wordPosition = _blockPositionProvider.GetBlockInWorldPosition(blockModel.Position.x, blockModel.Position.y);
+            return _gameFactory.CreateBlockView(wordPosition, _parent, _staticData.CellSize, blockModel.Value);
+        }
+
+        public bool AbleToSpawnRandomBlock()
+        {
+            return _blockPositionProvider.TryGetRandomPosition(Blocks, out _);
         }
     }
 }

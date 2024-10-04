@@ -1,11 +1,14 @@
-﻿using Code.StaticData;
-using UnityEngine;
+﻿using Code.Logic;
+using Code.StaticData;
 
 namespace Code.Services
 {
     public interface ISpawnService
     {
         public void SpawnCells(LevelStaticData staticData);
-        public void SpawnBlock(Vector2Int position, long value);
+        public void SpawnBlock(BlockModel blockModel);
+        public void SpawnRandomBlock();
+        public bool AbleToSpawnRandomBlock();
+        public BlockView SpawnBlockView(BlockModel blockModel);
     }
 }

@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48fcf930fe4e40bc853c11913c215eeb, type: 3}
   m_Name: 4x4LevelData
   m_EditorClassIdentifier: 
-  Dimensions: {x: 4, y: 4}
-  CellSize: {x: 0.85, y: 0.85}
+  Dimensions: {x: 3, y: 3}
+  CellSize: {x: 0.7, y: 0.7}
   FieldSize: {x: 4, y: 4}
-  CellPrefab: {fileID: 3590568331276840675, guid: 24c143a457fb1d7468d573f266bef2bb, type: 3}
