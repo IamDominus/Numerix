@@ -1,6 +1,6 @@
 ﻿using Code.Logic;
 
-namespace Code.Services
+namespace Code.Providers
 {
     public interface IBlocksProvider
     {

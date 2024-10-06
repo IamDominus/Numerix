@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Code.Logic
+namespace Code.Views
 {
     public class Cell : MonoBehaviour
     {

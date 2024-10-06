@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace Code
+namespace Code.Logic.Features
 {
-    public interface IBlocksService
+    public interface IMoveBlocksService
     {
         void MoveBlocks(Vector2Int direction);
         void ResetBlocksFlags();

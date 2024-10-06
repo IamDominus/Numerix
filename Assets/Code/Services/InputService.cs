@@ -8,12 +8,20 @@ namespace Code.Services
     public class InputService : MonoBehaviour, IInputService, IDragHandler, IEndDragHandler
     {
         public event Action<DragDirection> OnDragged;
+        public event Action<bool> OnEnabledChanged;
 
         private bool _isEnabled;
 
-        public void SetEnabled(bool isEnabled)
+        public void Enable()
         {
-            _isEnabled = isEnabled;
+            _isEnabled = true;
+            OnEnabledChanged?.Invoke(_isEnabled);
+        }
+
+        public void Disable()
+        {
+            _isEnabled = false;
+            OnEnabledChanged?.Invoke(_isEnabled);
         }
 
         public void OnEndDrag(PointerEventData eventData)

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Code.Services
+namespace Code.Providers
 {
     public interface IBlockPositionProvider
     {

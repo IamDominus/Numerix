@@ -1,17 +1,17 @@
-﻿using Code.Logic;
+﻿using Code.Providers;
 using Code.Services;
 using UnityEngine;
 
-namespace Code
+namespace Code.Logic.Features
 {
-    public class BlocksService : IBlocksService
+    public class MoveBlocksService : IMoveBlocksService
     {
         private Block[,] Blocks => _blocksProvider.Blocks;
 
         private readonly IBlocksProvider _blocksProvider;
         private readonly IBlocksValidationService _blocksValidationService;
 
-        public BlocksService(IBlocksProvider blocksProvider, IBlocksValidationService blocksValidationService)
+        public MoveBlocksService(IBlocksProvider blocksProvider, IBlocksValidationService blocksValidationService)
         {
             _blocksProvider = blocksProvider;
             _blocksValidationService = blocksValidationService;
@@ -42,11 +42,12 @@ namespace Code
                 for (var y = direction.y > 0 ? yMax - 1 : 0; y >= 0 && y < yMax; y += direction.y > 0 ? -1 : 1)
                 {
                     var block = Blocks[x, y];
-                    if (block != null)
+                    if (block == null)
                     {
-                        block.ResetFlags();
-                        MoveOrMergeBlock(block, direction.x, direction.y);
+                        continue;
                     }
+
+                    MoveOrMergeBlock(block, direction.x, direction.y);
                 }
             }
         }
@@ -75,9 +76,10 @@ namespace Code
 
         private void MergeBlocks(Block block, Block targetBlock)
         {
+            Blocks[targetBlock.Model.Position.x, targetBlock.Model.Position.y] = block;
             Blocks[block.Model.Position.x, block.Model.Position.y] = null;
-            block.Move(targetBlock.Model.Position, true);
-            targetBlock.MergeWithBlock(block);
+            targetBlock.DeleteWithDelay();
+            block.Merge(targetBlock);
         }
 
         private void MoveBlock(Block block, int newX, int newY)
@@ -91,7 +93,7 @@ namespace Code
                 Blocks[oldPosition.x, oldPosition.y] = null;
             }
 
-            block.Move(newPosition, false);
+            block.Move(newPosition);
         }
     }
 }

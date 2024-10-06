@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
-using Code.Providers;
 using Code.StaticData;
 using Code.Utils;
 using UnityEngine;
 using Zenject;
 
-namespace Code.Services
+namespace Code.Providers
 {
     public class BlockPositionProvider : IBlockPositionProvider, IInitializable
     {

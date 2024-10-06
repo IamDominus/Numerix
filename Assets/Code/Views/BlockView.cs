@@ -1,13 +1,12 @@
-﻿using Code.Services;
-using Code.Utils;
+﻿using Code.Providers;
+using Code.Services;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Rendering;
 using Zenject;
 
-namespace Code.Logic
+namespace Code.Views
 {
     public class BlockView : MonoBehaviour
     {
@@ -17,6 +16,7 @@ namespace Code.Logic
 
         private IBlockPositionProvider _blockPositionProvider;
         private bool _deleteAfterMove;
+        private bool _isMoving;
 
         [Inject]
         private void Construct(IBlockPositionProvider blockPositionProvider)
@@ -25,31 +25,35 @@ namespace Code.Logic
             _text.text = Value.ToString();
         }
 
-        public void Move(Vector2Int position, bool deleteAfterMove)
+        public void Move(Vector2Int position)
         {
-            _deleteAfterMove = deleteAfterMove;
-
+            _isMoving = true;
             var newPosition = _blockPositionProvider.GetBlockInWorldPosition(position);
             transform.DOMove(newPosition, Constants.MOVE_ANIMATION_TIME_SEC).SetEase(Ease.InCubic).OnComplete(OnFinishedMoving);
         }
 
-        public async UniTask Delete()
+        private void OnFinishedMoving()
         {
-            if (_deleteAfterMove)
-            {
-                return;
-            }
+            _isMoving = false;
+        }
 
-            await UniTask.WaitForSeconds(Constants.MOVE_ANIMATION_TIME_SEC);
+        public void Delete()
+        {
             Destroy(gameObject);
         }
 
-        private void OnFinishedMoving()
+        public async UniTask DeleteWithDelay()
         {
-            if (_deleteAfterMove)
+            if (_isMoving)
             {
-                Destroy(gameObject);
+                await UniTask.WaitWhile(() => _isMoving);
             }
+            else
+            {
+                await UniTask.WaitForSeconds(Constants.MOVE_ANIMATION_TIME_SEC);
+            }
+
+            Destroy(gameObject);
         }
     }
 }

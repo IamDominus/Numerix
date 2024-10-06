@@ -1,6 +1,8 @@
 ﻿using System;
 using Code.Enums;
+using Code.Logic.Features;
 using Code.Services;
+using Code.Utils;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;
@@ -11,15 +13,20 @@ namespace Code
     {
         private readonly IInputService _inputService;
         private readonly ISpawnService _spawnService;
-        private readonly IBlocksService _blocksService;
+        private readonly IMoveBlocksService _moveBlocksService;
         private readonly IBlocksValidationService _blocksValidationService;
+        private readonly IUndoMoveBlocksService _undoMoveBlocksService;
+        private readonly ILevelDataRepository _levelDataRepository;
 
-        public PlayerTurnService(IInputService inputService, ISpawnService spawnService, IBlocksService blocksService, IBlocksValidationService blocksValidationService)
+        public PlayerTurnService(IInputService inputService, ISpawnService spawnService, IMoveBlocksService moveBlocksService, IBlocksValidationService blocksValidationService,
+            IUndoMoveBlocksService undoMoveBlocksService, ILevelDataRepository levelDataRepository)
         {
             _inputService = inputService;
             _spawnService = spawnService;
-            _blocksService = blocksService;
+            _moveBlocksService = moveBlocksService;
             _blocksValidationService = blocksValidationService;
+            _undoMoveBlocksService = undoMoveBlocksService;
+            _levelDataRepository = levelDataRepository;
         }
 
         public void Initialize()
@@ -30,64 +37,50 @@ namespace Code
         public void Start()
         {
             _spawnService.SpawnRandomBlock();
-            _inputService.SetEnabled(true);
+            _levelDataRepository.SaveTurn(Vector2Int.up);
+            _inputService.Enable();
+        }
+
+        public void Undo()
+        {
+            _undoMoveBlocksService.UndoTurn().Forget();
         }
 
         private void OnDragged(DragDirection dragDirection)
         {
-            PlayTurn(dragDirection).Forget();
+            var moveDirection = VectorUtils.GetMoveDirection(dragDirection);
+            if (_blocksValidationService.AbleToMoveBlocks(moveDirection))
+            {
+                MoveBlocks(moveDirection).Forget();
+            }
         }
 
-        private async UniTask PlayTurn(DragDirection dragDirection)
+        private async UniTask MoveBlocks(Vector2Int moveDirection)
         {
-            var moveDirection = GetMoveDirection(dragDirection);
-            if (_blocksValidationService.AbleToMoveBlocks(moveDirection) == false)
-            {
-                return;
-            }
-
-            _inputService.SetEnabled(false);
-            _blocksService.MoveBlocks(moveDirection);
-            _blocksService.ResetBlocksFlags();
-
+            _inputService.Disable();
+            _moveBlocksService.MoveBlocks(moveDirection);
+            _moveBlocksService.ResetBlocksFlags();
             await UniTask.WaitForSeconds(Constants.DELAY_BEFORE_SPAWN_SEC);
 
             if (_spawnService.AbleToSpawnRandomBlock())
             {
                 _spawnService.SpawnRandomBlock();
-                //save game
-                _inputService.SetEnabled(true);
+                _levelDataRepository.SaveTurn(moveDirection);
+                _inputService.Enable();
             }
+
             if (_blocksValidationService.AbleToMoveBlocks() == false)
             {
-                Debug.Log("GAME IS OVER");
                 //TODO move state in state machine(delete save)
                 //delete save
-            }
-        }
-        
-        //TODO move to different class
-        private Vector2Int GetMoveDirection(DragDirection dragDirection)
-        {
-            switch (dragDirection)
-            {
-                case DragDirection.Up:
-                    return Vector2Int.left;
-                case DragDirection.Down:
-                    return Vector2Int.right;
-                case DragDirection.Left:
-                    return Vector2Int.down;
-                case DragDirection.Right:
-                    return Vector2Int.up;
-                default:
-                    return Vector2Int.left;
+                Debug.Log("GAME IS OVER");
             }
         }
 
         public void Dispose()
         {
             _inputService.OnDragged -= OnDragged;
-            _inputService.SetEnabled(false);
+            _inputService.Disable();
         }
     }
 }

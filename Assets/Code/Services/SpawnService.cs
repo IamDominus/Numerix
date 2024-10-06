@@ -2,35 +2,34 @@
 using Code.Logic;
 using Code.Providers;
 using Code.StaticData;
+using Code.Views;
 using UnityEngine;
 using Zenject;
 
 namespace Code.Services
 {
-    public class SpawnService : ISpawnService, IInitializable, IBlocksProvider
+    public class SpawnService : ISpawnService, IInitializable
     {
-        public Block[,] Blocks => _blocks;
-
         private readonly Transform _parent;
         private readonly IBlockPositionProvider _blockPositionProvider;
         private readonly IStaticDataProvider _staticDataProvider;
+        private readonly ILevelDataRepository _levelDataRepository;
         private readonly IGameFactory _gameFactory;
         private LevelStaticData _staticData;
-        private Block[,] _blocks;
 
         public SpawnService(IGameObjectsProvider gameObjectsProvider, IBlockPositionProvider blockPositionProvider, IGameFactory gameFactory,
-            IStaticDataProvider staticDataProvider)
+            IStaticDataProvider staticDataProvider, ILevelDataRepository levelDataRepository)
         {
             _parent = gameObjectsProvider.CellsParent;
             _blockPositionProvider = blockPositionProvider;
             _gameFactory = gameFactory;
             _staticDataProvider = staticDataProvider;
+            _levelDataRepository = levelDataRepository;
         }
 
         public void Initialize()
         {
             _staticData = _staticDataProvider.GetLevelStaticData(Constants.DIMENSIONS);
-            _blocks = new Block[_staticData.Dimensions.x, _staticData.Dimensions.y];
         }
 
         public void SpawnCells(LevelStaticData staticData)
@@ -49,19 +48,14 @@ namespace Code.Services
         {
             var wordPosition = _blockPositionProvider.GetBlockInWorldPosition(blockModel.Position.x, blockModel.Position.y);
             var block = _gameFactory.CreateBlock(blockModel, wordPosition, _parent, _staticData.CellSize, blockModel.Value);
-            _blocks[blockModel.Position.x, blockModel.Position.y] = block;
+            _levelDataRepository.AddBlock(block);
         }
 
         public void SpawnRandomBlock()
         {
-            if (_blockPositionProvider.TryGetRandomPosition(Blocks, out var position))
+            if (_blockPositionProvider.TryGetRandomPosition(_levelDataRepository.Blocks, out var position))
             {
-                var blockModel = new BlockModel()
-                {
-                    Value = 2,
-                    Position = position
-                };
-
+                var blockModel = new BlockModel(2, position);
                 SpawnBlock(blockModel);
             }
         }
@@ -74,7 +68,7 @@ namespace Code.Services
 
         public bool AbleToSpawnRandomBlock()
         {
-            return _blockPositionProvider.TryGetRandomPosition(Blocks, out _);
+            return _blockPositionProvider.TryGetRandomPosition(_levelDataRepository.Blocks, out _);
         }
     }
 }
