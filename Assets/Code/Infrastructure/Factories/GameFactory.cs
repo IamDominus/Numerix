@@ -9,8 +9,8 @@ namespace Code.Infrastructure.Factories
 {
     public class GameFactory : IInitializable, IGameFactory
     {
-        private const string CELL_PREFAB_PATH = "Cell";
-        private const string BLOCKS_FOLDER_PREFAB_PATH = "Blocks";
+        private const string CELL_PREFAB_PATH = "Prefabs/FieldAndCell/Cell";
+        private const string BLOCKS_FOLDER_PREFAB_PATH = "Prefabs/Blocks";
 
         private readonly DiContainer _diContainer;
         private Cell _cellPrefab;
