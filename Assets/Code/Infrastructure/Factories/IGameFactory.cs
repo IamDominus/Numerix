@@ -1,5 +1,5 @@
-﻿using Code.Logic;
-using Code.Views;
+﻿using Code.Gameplay;
+using Code.Gameplay.Views;
 using UnityEngine;
 
 namespace Code.Infrastructure.Factories

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Code.Enums;
-using Code.Logic;
+using Code.Gameplay;
 using Code.Utils;
 using UnityEngine;
 

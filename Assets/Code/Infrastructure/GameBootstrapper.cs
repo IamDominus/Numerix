@@ -1,5 +1,6 @@
 ﻿using Code.Infrastructure.FSM;
 using Code.Infrastructure.GSM;
+using Code.Infrastructure.GSM.States;
 using UnityEngine;
 using Zenject;
 
@@ -20,7 +21,7 @@ namespace Code.Infrastructure
         private void Awake()
         {
             _gameStateMachine.RegisterState(_stateFactory.Create<BootstrapState>());
-            _gameStateMachine.RegisterState(_stateFactory.Create<LoadLevelState>());
+            _gameStateMachine.RegisterState(_stateFactory.Create<LoadSceneState>());
 
             _gameStateMachine.Enter<BootstrapState>();
             DontDestroyOnLoad(this);

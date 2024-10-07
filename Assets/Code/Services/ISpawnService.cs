@@ -1,6 +1,6 @@
-﻿using Code.Logic;
+﻿using Code.Gameplay;
+using Code.Gameplay.Views;
 using Code.StaticData;
-using Code.Views;
 
 namespace Code.Services
 {

@@ -1,8 +1,9 @@
-﻿using Code.Infrastructure.Factories;
-using Code.Logic;
+﻿using Code.Gameplay;
+using Code.Gameplay.Views;
+using Code.Infrastructure.Factories;
 using Code.Providers;
+using Code.Providers.GameObject;
 using Code.StaticData;
-using Code.Views;
 using UnityEngine;
 using Zenject;
 
@@ -17,10 +18,10 @@ namespace Code.Services
         private readonly IGameFactory _gameFactory;
         private LevelStaticData _staticData;
 
-        public SpawnService(IGameObjectsProvider gameObjectsProvider, IBlockPositionProvider blockPositionProvider, IGameFactory gameFactory,
+        public SpawnService(ILevelObjectsProvider levelObjectsProvider, IBlockPositionProvider blockPositionProvider, IGameFactory gameFactory,
             IStaticDataProvider staticDataProvider, ILevelDataRepository levelDataRepository)
         {
-            _parent = gameObjectsProvider.CellsParent;
+            _parent = levelObjectsProvider.CellsParent;
             _blockPositionProvider = blockPositionProvider;
             _gameFactory = gameFactory;
             _staticDataProvider = staticDataProvider;
