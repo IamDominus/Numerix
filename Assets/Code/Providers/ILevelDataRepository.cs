@@ -1,8 +1,7 @@
 ﻿using Code.Gameplay;
-using Code.Providers;
 using UnityEngine;
 
-namespace Code
+namespace Code.Providers
 {
     public interface ILevelDataRepository : IBlocksProvider
     {

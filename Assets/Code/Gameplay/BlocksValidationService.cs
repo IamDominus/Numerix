@@ -1,9 +1,7 @@
-﻿using Code.Gameplay;
-using Code.Providers;
-using Code.Services;
+﻿using Code.Providers;
 using UnityEngine;
 
-namespace Code
+namespace Code.Gameplay
 {
     public class BlocksValidationService : IBlocksValidationService
     {

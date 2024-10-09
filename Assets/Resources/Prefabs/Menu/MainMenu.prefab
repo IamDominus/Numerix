@@ -425,9 +425,8 @@ GameObject:
   - component: {fileID: 6698757892062407382}
   - component: {fileID: 6698757892062407376}
   - component: {fileID: 6698757892062407383}
-  - component: {fileID: 9055144880199012693}
   m_Layer: 5
-  m_Name: 2046Text
+  m_Name: DimensionsText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -481,7 +480,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 2048
+  m_text: 4 X 4
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9b089272b16c21548a9ba0f3d69e9c91, type: 2}
   m_sharedMaterial: {fileID: 7153659109800252687, guid: 9b089272b16c21548a9ba0f3d69e9c91, type: 2}
@@ -550,19 +549,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!114 &9055144880199012693
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6698757892062407381}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 790e1612f26c47fc951c1da646768fe5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _text: {fileID: 6698757892062407383}
 --- !u!1 &6698757892590726532
 GameObject:
   m_ObjectHideFlags: 0
@@ -814,6 +800,7 @@ MonoBehaviour:
   - {fileID: 753368927701488332}
   - {fileID: 753368926592867697}
   _playButton: {fileID: 6015685654023317088}
+  _dimensionsText: {fileID: 6698757892062407383}
 --- !u!1001 &2758897519644907602
 PrefabInstance:
   m_ObjectHideFlags: 0

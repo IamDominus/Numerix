@@ -1,7 +1,6 @@
-﻿using Code.Gameplay;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Code
+namespace Code.Gameplay
 {
     public interface IBlocksValidationService
     {

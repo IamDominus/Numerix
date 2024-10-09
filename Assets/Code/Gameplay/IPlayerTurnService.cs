@@ -1,4 +1,4 @@
-﻿namespace Code
+﻿namespace Code.Gameplay
 {
     public interface IPlayerTurnService
     {

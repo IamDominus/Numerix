@@ -1,9 +1,10 @@
-﻿using Code.Services;
+﻿using Code.Gameplay;
+using Code.Services;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace Code
+namespace Code.Views
 {
     public class UndoButton : MonoBehaviour
     {

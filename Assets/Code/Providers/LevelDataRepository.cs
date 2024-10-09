@@ -1,11 +1,10 @@
 ﻿using Code.Gameplay;
-using Code.Providers;
 using Code.StaticData;
 using Code.Utils;
 using UnityEngine;
 using Zenject;
 
-namespace Code
+namespace Code.Providers
 {
     public class LevelDataRepository : IInitializable, ILevelDataRepository
     {

@@ -1,13 +1,14 @@
 ﻿using System;
 using Code.Enums;
 using Code.Gameplay.Features;
+using Code.Providers;
 using Code.Services;
 using Code.Utils;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 
-namespace Code
+namespace Code.Gameplay
 {
     public class PlayerTurnService : IInitializable, IDisposable, IPlayerTurnService
     {
