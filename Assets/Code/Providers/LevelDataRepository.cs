@@ -11,7 +11,7 @@ namespace Code.Providers
         public Block[,] Blocks { get; private set; }
 
         private readonly IStaticDataProvider _staticDataProvider;
-        private LevelStaticData _staticData;
+        // private LevelStaticData _staticData;
         private DropOutStack<BlockModel[,]> _blockModels;
         private DropOutStack<Vector2Int> _moveDirections;
 
@@ -22,10 +22,10 @@ namespace Code.Providers
 
         public void Initialize()
         {
-            _staticData = _staticDataProvider.GetLevelStaticData(Constants.DIMENSIONS);
+            // _staticData = _staticDataProvider.GetLevelStaticData(Constants.DIMENSIONS);
             _blockModels = new DropOutStack<BlockModel[,]>(Constants.MAX_UNDO + 1);
             _moveDirections = new DropOutStack<Vector2Int>(Constants.MAX_UNDO + 1);
-            Blocks = new Block[_staticData.Dimensions.x, _staticData.Dimensions.y];
+            Blocks = new Block[Constants.DIMENSIONS.x, Constants.DIMENSIONS.y];
         }
 
         public void AddBlock(Block block)
@@ -56,7 +56,7 @@ namespace Code.Providers
 
         public void SaveTurn(Vector2Int moveDirection)
         {
-            var blockModels = new BlockModel[_staticData.Dimensions.x, _staticData.Dimensions.y];
+            var blockModels = new BlockModel[Constants.DIMENSIONS.x, Constants.DIMENSIONS.y];
             for (int x = 0; x < Blocks.GetLength(0); x++)
             {
                 for (int y = 0; y < Blocks.GetLength(1); y++)

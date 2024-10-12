@@ -13,21 +13,21 @@ namespace Code.Gameplay.Views
 
         [SerializeField] private TMP_Text _text;
 
-        private IBlockPositionProvider _blockPositionProvider;
+        private IDynamicBoundsProvider _dynamicBoundsProvider;
         private bool _deleteAfterMove;
         private bool _isMoving;
 
         [Inject]
-        private void Construct(IBlockPositionProvider blockPositionProvider)
+        private void Construct(IDynamicBoundsProvider dynamicBoundsProvider)
         {
-            _blockPositionProvider = blockPositionProvider;
+            _dynamicBoundsProvider = dynamicBoundsProvider;
             _text.text = Value.ToString();
         }
 
         public void Move(Vector2Int position)
         {
             _isMoving = true;
-            var newPosition = _blockPositionProvider.GetBlockInWorldPosition(position);
+            var newPosition = _dynamicBoundsProvider.GetBlockInWorldPosition(position);
             transform.DOMove(newPosition, Constants.MOVE_ANIMATION_TIME_SEC).SetEase(Ease.InCubic).OnComplete(OnFinishedMoving);
         }
 

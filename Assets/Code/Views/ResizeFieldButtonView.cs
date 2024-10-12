@@ -33,6 +33,7 @@ namespace Code.Views
 
         private void OnButtonClicked()
         {
+            Constants.DIMENSIONS = new Vector2Int(_viewEntity.X, _viewEntity.Y);
             var resizeFieldEvent = new ResizeFieldEvent()
             {
                 X = _viewEntity.X,

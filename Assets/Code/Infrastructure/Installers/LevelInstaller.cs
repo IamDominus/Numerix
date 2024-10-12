@@ -14,6 +14,7 @@ namespace Code.Infrastructure.Installers
     public class LevelInstaller : MonoInstaller
     {
         public LevelObjectsProvider LevelObjectsProvider;
+        public FieldSizeHelper FieldSizeHelper;
         public InputService InputService;
 
         public override void InstallBindings()
@@ -33,6 +34,8 @@ namespace Code.Infrastructure.Installers
             BindControllers();
 
             BindGameStateMachine();
+            
+            Container.Bind<FieldSizeHelper>().FromInstance(FieldSizeHelper).AsSingle();
         }
 
         private void BindObjectsCreationServices()
@@ -53,7 +56,7 @@ namespace Code.Infrastructure.Installers
 
         private void BindHelpers()
         {
-            Container.BindInterfacesTo<BlockPositionProvider>().AsSingle();
+            Container.BindInterfacesAndSelfTo<DynamicBoundsProvider>().AsSingle();
             Container.BindInterfacesTo<BlocksValidationService>().AsSingle();
         }
 

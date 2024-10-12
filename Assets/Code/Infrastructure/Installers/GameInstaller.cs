@@ -15,12 +15,24 @@ namespace Code.Infrastructure.Installers
         {
             BindCoroutineRunner();
             
+            Container.BindInterfacesTo<AddService>().AsSingle().NonLazy();
             Container.Bind<SceneLoader>().AsSingle();
             Container.BindInterfacesTo<StaticDataProvider>().AsSingle();
             Container.BindInterfacesTo<EventBus>().AsSingle();
             Container.BindInterfacesTo<UIFactory>().AsSingle();
+            
+            BindLoadingCurtain();
 
             BindGameStateMachine();
+        }
+
+        private void BindLoadingCurtain()
+        {
+            Container
+                .Bind<ILoadingCurtain>()
+                .To<LoadingCurtain>()
+                .FromComponentInNewPrefabResource(Constants.Resouces.LOADING_CURTAIN)
+                .AsSingle();
         }
 
         private void BindCoroutineRunner()

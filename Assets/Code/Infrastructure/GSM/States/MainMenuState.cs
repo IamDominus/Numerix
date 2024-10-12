@@ -4,6 +4,7 @@ using Code.EventSystem.Events;
 using Code.Infrastructure.FSM;
 using Code.Infrastructure.GSM.Payloads;
 using Code.ViewControllers;
+using Cysharp.Threading.Tasks;
 
 namespace Code.Infrastructure.GSM.States
 {
@@ -12,22 +13,26 @@ namespace Code.Infrastructure.GSM.States
         private readonly IViewController _mainMenuViewController;
         private readonly IEventBus _eventBus;
         private readonly GameStateMachine _gameStateMachine;
+        private readonly IAddService _addService;
 
-        public MainMenuState(MainMenuViewController mainMenuViewController, IEventBus eventBus, GameStateMachine gameStateMachine)
+        public MainMenuState(MainMenuViewController mainMenuViewController, IEventBus eventBus, GameStateMachine gameStateMachine, IAddService addService)
         {
             _mainMenuViewController = mainMenuViewController;
             _eventBus = eventBus;
             _gameStateMachine = gameStateMachine;
+            _addService = addService;
         }
 
         public void Enter()
         {
+            _addService.CreateAndShowBanner();
             _eventBus.Subscribe<PlayButtonClicked>(OnPlayButtonClicked);
             _mainMenuViewController.Show();
         }
 
         public void Exit()
         {
+            _addService.DestroyBanner();
             _eventBus.Unsubscribe<PlayButtonClicked>(OnPlayButtonClicked);
             _mainMenuViewController.Hide();
         }
