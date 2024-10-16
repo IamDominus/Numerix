@@ -2,6 +2,9 @@
 using Code.Enums;
 using Code.Infrastructure.FSM;
 using Code.Infrastructure.GSM.Payloads;
+using Code.Providers.SaveLoad;
+using Code.Services;
+using Code.Services.Ad;
 using Code.Services.SaveLoad;
 using Cysharp.Threading.Tasks;
 using UnityEngine;
@@ -13,16 +16,16 @@ namespace Code.Infrastructure.GSM.States
         private readonly ISaveLoadService _saveLoadService;
         private readonly IGameSaveProvider _gameSaveProvider;
         private readonly GameStateMachine _gameStateMachine;
-        private readonly IAddService _addService;
+        private readonly IAdService _adService;
         private readonly ISaveLoadRegistry _saveLoadRegistry;
 
-        public LoadGameState(ISaveLoadService saveLoadService, IGameSaveProvider gameSaveProvider, GameStateMachine gameStateMachine, IAddService addService,
+        public LoadGameState(ISaveLoadService saveLoadService, IGameSaveProvider gameSaveProvider, GameStateMachine gameStateMachine, IAdService adService,
             ISaveLoadRegistry saveLoadRegistry)
         {
             _saveLoadService = saveLoadService;
             _gameSaveProvider = gameSaveProvider;
             _gameStateMachine = gameStateMachine;
-            _addService = addService;
+            _adService = adService;
             _saveLoadRegistry = saveLoadRegistry;
         }
 
@@ -39,7 +42,7 @@ namespace Code.Infrastructure.GSM.States
         {
             LoadSaveAndNotifySubs();
 
-            await UniTask.WaitUntil(() => _addService.IsInitialized);
+            await UniTask.WaitUntil(() => _adService.IsInitialized);
 
             EnterMainMenu();
         }

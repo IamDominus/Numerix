@@ -1,28 +1,29 @@
 ﻿using Code.Infrastructure.FSM;
 using Code.Infrastructure.GSM.Payloads;
+using Code.Views.LoadingCurtain;
 
 namespace Code.Infrastructure.GSM.States
 {
     public class LoadSceneState : IPayloadedState<LoadScenePayload>
     {
         private readonly SceneLoader _sceneLoader;
-        private readonly ILoadingCurtain _loadingCurtain;
+        private readonly ILoadingCurtainView _loadingCurtainView;
 
-        public LoadSceneState(SceneLoader sceneLoader, ILoadingCurtain loadingCurtain)
+        public LoadSceneState(SceneLoader sceneLoader, ILoadingCurtainView loadingCurtainView)
         {
             _sceneLoader = sceneLoader;
-            _loadingCurtain = loadingCurtain;
+            _loadingCurtainView = loadingCurtainView;
         }
 
         public void Enter(LoadScenePayload payload)
         {
-            _loadingCurtain.Show();
+            _loadingCurtainView.Show();
             _sceneLoader.Load(payload.SceneName.ToString(), payload.Callback);
         }
 
         public void Exit()
         {
-            _loadingCurtain.Hide();
+            _loadingCurtainView.Hide();
         }
     }
 }

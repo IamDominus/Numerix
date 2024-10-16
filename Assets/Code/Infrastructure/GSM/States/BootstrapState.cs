@@ -1,21 +1,22 @@
 ﻿using Code.Infrastructure.FSM;
+using Code.Views.LoadingCurtain;
 
 namespace Code.Infrastructure.GSM.States
 {
     public class BootstrapState : IState
     {
         private readonly GameStateMachine _gameStateMachine;
-        private readonly ILoadingCurtain _loadingCurtain;
+        private readonly ILoadingCurtainView _loadingCurtainView;
 
-        public BootstrapState(GameStateMachine gameGameStateMachine, ILoadingCurtain loadingCurtain)
+        public BootstrapState(GameStateMachine gameGameStateMachine, ILoadingCurtainView loadingCurtainView)
         {
             _gameStateMachine = gameGameStateMachine;
-            _loadingCurtain = loadingCurtain;
+            _loadingCurtainView = loadingCurtainView;
         }
 
         public void Enter()
         {
-            _loadingCurtain.Show();
+            _loadingCurtainView.Show();
             _gameStateMachine.Enter<LoadGameState>();
         }
 

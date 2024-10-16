@@ -1,7 +1,7 @@
 ﻿using System;
 using Code.Enums;
 
-namespace Code.Services
+namespace Code.Services.Input
 {
     public interface IInputService
     {

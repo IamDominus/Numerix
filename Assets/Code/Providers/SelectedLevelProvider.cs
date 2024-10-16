@@ -1,13 +1,14 @@
 ﻿using System;
 using Code.Data;
 using Code.Infrastructure;
+using Code.Providers.SaveLoad;
 using Code.Services.SaveLoad;
 using UnityEngine;
 using Zenject;
 
 namespace Code.Providers
 {
-    public class SelectedLevelProvider : ISelectedLevelProvider, IGameSaveWriter, IInitializable, IDisposable, IGameSaveReader
+    public class SelectedLevelProvider : ISelectedLevelProvider, IInitializable, IDisposable, IGameSaveWriter, IGameSaveReader
     {
         public Observable<Vector2Int> Level { get; set; }
 

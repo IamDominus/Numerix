@@ -1,6 +1,6 @@
 using Code.Data;
 
-namespace Code.Services.SaveLoad
+namespace Code.Providers.SaveLoad
 {
     public interface IGameSaveProvider
     {

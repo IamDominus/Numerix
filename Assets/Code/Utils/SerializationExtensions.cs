@@ -1,18 +1,18 @@
 ﻿using Code.Data;
-using UnityEngine;
+using Newtonsoft.Json;
 
 namespace Code.Utils
 {
-    public static class DataExtensions
+    public static class SerializationExtensions
     {
         public static T ToDeserialized<T>(this string json)
         {
-            return JsonUtility.FromJson<T>(json);
+            return JsonConvert.DeserializeObject<T>(json);
         }
 
         public static string ToSerialized(this GameSaveData data)
         {
-            return JsonUtility.ToJson(data);
+            return JsonConvert.SerializeObject(data);
         }
     }
 }

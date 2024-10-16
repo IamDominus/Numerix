@@ -1,4 +1,4 @@
-﻿using Code.Providers;
+﻿using Code.Gameplay.Providers;
 using Cysharp.Threading.Tasks;
 using DG.Tweening;
 using TMPro;

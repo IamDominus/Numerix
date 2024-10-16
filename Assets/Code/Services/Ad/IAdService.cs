@@ -1,6 +1,6 @@
-﻿namespace Code
+﻿namespace Code.Services.Ad
 {
-    public interface IAddService
+    public interface IAdService
     {
         float GetBannerHeightInPixels();
         bool IsInitialized { get; }

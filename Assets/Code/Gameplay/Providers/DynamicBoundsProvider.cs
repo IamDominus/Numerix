@@ -1,8 +1,12 @@
-﻿using Code.Providers.GameObject;
+﻿using Code.Providers;
+using Code.Providers.GameObject;
+using Code.Services;
+using Code.Services.Ad;
+using Code.Services.HUD;
 using Code.Views;
 using UnityEngine;
 
-namespace Code.Providers
+namespace Code.Gameplay.Providers
 {
     public class DynamicBoundsProvider : IDynamicBoundsProvider
     {
@@ -13,7 +17,7 @@ namespace Code.Providers
         public Vector2 CellSize => _cellSize;
 
         private readonly ILevelObjectsProvider _objectsProvider;
-        private readonly IAddService _addService;
+        private readonly IAdService _adService;
         private readonly IHUDSafeAreaService _hudSafeAreaService;
         private readonly ISelectedLevelProvider _selectedLevelProvider;
 
@@ -22,11 +26,11 @@ namespace Code.Providers
         private Vector2 _cellSize;
         private Rect _hudRect;
 
-        public DynamicBoundsProvider(ILevelObjectsProvider objectsProvider, IAddService addService, IHUDSafeAreaService hudSafeAreaService,
+        public DynamicBoundsProvider(ILevelObjectsProvider objectsProvider, IAdService adService, IHUDSafeAreaService hudSafeAreaService,
             ISelectedLevelProvider selectedLevelProvider)
         {
             _objectsProvider = objectsProvider;
-            _addService = addService;
+            _adService = adService;
             _hudSafeAreaService = hudSafeAreaService;
             _selectedLevelProvider = selectedLevelProvider;
         }
@@ -114,7 +118,7 @@ namespace Code.Providers
 
         private float CalculateBannerHeight()
         {
-            var bannerHeight = _addService.GetBannerHeightInPixels();
+            var bannerHeight = _adService.GetBannerHeightInPixels();
             var screenDensity = Screen.dpi / 160f;
 
             return bannerHeight * screenDensity + BOT_PADDING;

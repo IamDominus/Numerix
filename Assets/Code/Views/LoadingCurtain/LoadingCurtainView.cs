@@ -1,9 +1,9 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 
-namespace Code
+namespace Code.Views.LoadingCurtain
 {
-    public class LoadingCurtain : MonoBehaviour, ILoadingCurtain
+    public class LoadingCurtainView : MonoBehaviour, ILoadingCurtainView
     {
         private const float FADE_IN_DURATION = 0.5f;
         [SerializeField] private CanvasGroup _canvas;

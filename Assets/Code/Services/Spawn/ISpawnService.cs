@@ -1,7 +1,7 @@
 ﻿using Code.Gameplay;
 using Code.Gameplay.Views;
 
-namespace Code.Services
+namespace Code.Services.Spawn
 {
     public interface ISpawnService
     {

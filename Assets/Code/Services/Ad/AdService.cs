@@ -1,9 +1,9 @@
 ﻿using GoogleMobileAds.Api;
 using Zenject;
 
-namespace Code
+namespace Code.Services.Ad
 {
-    public class AddService : IInitializable, IAddService
+    public class AdService : IInitializable, IAdService
     {
         private static readonly AdSize BANNER_SIZE = AdSize.Banner;
 #if UNITY_ANDROID

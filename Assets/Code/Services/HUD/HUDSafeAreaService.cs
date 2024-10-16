@@ -3,7 +3,7 @@ using UnityEngine;
 using Zenject;
 using Screen = UnityEngine.Device.Screen;
 
-namespace Code
+namespace Code.Services.HUD
 {
     public class HUDSafeAreaService : IInitializable, IHUDSafeAreaService
     {

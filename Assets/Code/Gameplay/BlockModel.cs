@@ -1,8 +1,10 @@
-﻿using Code.Utils;
+﻿using System;
+using Code.Utils;
 using UnityEngine;
 
 namespace Code.Gameplay
 {
+    [Serializable]
     public class BlockModel
     {
         public bool MergedThisTurn { get; set; }

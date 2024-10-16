@@ -1,6 +1,4 @@
-﻿using Code.Gameplay;
-
-namespace Code.Providers
+﻿namespace Code.Gameplay.Providers
 {
     public interface IBlocksProvider
     {

@@ -4,6 +4,8 @@ using Code.EventSystem.Events;
 using Code.Infrastructure.FSM;
 using Code.Infrastructure.GSM.Payloads;
 using Code.Services;
+using Code.Services.Ad;
+using Code.Services.Input;
 
 namespace Code.Infrastructure.GSM.States
 {
@@ -11,14 +13,14 @@ namespace Code.Infrastructure.GSM.States
     {
         private readonly IEventBus _eventBus;
         private readonly GameStateMachine _gameStateMachine;
-        private readonly IAddService _addService;
+        private readonly IAdService _adService;
         private readonly IInputService _inputService;
 
-        public GameplayState(IEventBus eventBus, GameStateMachine gameStateMachine, IAddService addService, IInputService inputService)
+        public GameplayState(IEventBus eventBus, GameStateMachine gameStateMachine, IAdService adService, IInputService inputService)
         {
             _eventBus = eventBus;
             _gameStateMachine = gameStateMachine;
-            _addService = addService;
+            _adService = adService;
             _inputService = inputService;
         }
 
@@ -40,7 +42,7 @@ namespace Code.Infrastructure.GSM.States
 
         public void Exit()
         {
-            _addService.DestroyBanner();
+            _adService.DestroyBanner();
             _eventBus.Unsubscribe<HomeButtonClicked>(OnHomeButtonClicked);
         }
     }

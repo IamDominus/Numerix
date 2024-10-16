@@ -1,13 +1,16 @@
 ﻿using Code.Gameplay;
 using Code.Gameplay.Facades;
 using Code.Gameplay.Features;
+using Code.Gameplay.Providers;
 using Code.Infrastructure.Factories;
 using Code.Infrastructure.FSM;
 using Code.Infrastructure.GSM.StateRegistrars;
 using Code.Infrastructure.GSM.States;
-using Code.Providers;
 using Code.Providers.GameObject;
 using Code.Services;
+using Code.Services.HUD;
+using Code.Services.Input;
+using Code.Services.Spawn;
 using Zenject;
 
 namespace Code.Infrastructure.Installers

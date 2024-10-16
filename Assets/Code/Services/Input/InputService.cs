@@ -3,7 +3,7 @@ using Code.Enums;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Code.Services
+namespace Code.Services.Input
 {
     public class InputService : MonoBehaviour, IInputService, IDragHandler, IEndDragHandler
     {

@@ -5,7 +5,11 @@ using Code.Infrastructure.GSM;
 using Code.Infrastructure.GSM.States;
 using Code.Infrastructure.Runners;
 using Code.Providers;
+using Code.Providers.SaveLoad;
+using Code.Services;
+using Code.Services.Ad;
 using Code.Services.SaveLoad;
+using Code.Views.LoadingCurtain;
 using Zenject;
 
 namespace Code.Infrastructure.Installers
@@ -16,7 +20,7 @@ namespace Code.Infrastructure.Installers
         {
             BindCoroutineRunner();
             
-            Container.BindInterfacesTo<AddService>().AsSingle().NonLazy();
+            Container.BindInterfacesTo<AdService>().AsSingle().NonLazy();
             Container.Bind<SceneLoader>().AsSingle();
             Container.BindInterfacesTo<StaticDataProvider>().AsSingle();
             Container.BindInterfacesTo<EventBus>().AsSingle();
@@ -40,8 +44,8 @@ namespace Code.Infrastructure.Installers
         private void BindLoadingCurtain()
         {
             Container
-                .Bind<ILoadingCurtain>()
-                .To<LoadingCurtain>()
+                .Bind<ILoadingCurtainView>()
+                .To<LoadingCurtainView>()
                 .FromComponentInNewPrefabResource(Constants.Resouces.LOADING_CURTAIN)
                 .AsSingle();
         }

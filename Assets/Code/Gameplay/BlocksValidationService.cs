@@ -1,4 +1,4 @@
-﻿using Code.Providers;
+﻿using Code.Gameplay.Providers;
 using UnityEngine;
 
 namespace Code.Gameplay

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using Code.Services.SaveLoad;
 
-namespace Code.Services.SaveLoad
+namespace Code.Providers.SaveLoad
 {
     public interface ISaveLoadRegistry
     {

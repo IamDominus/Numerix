@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
+using Code.Services.SaveLoad;
 using UnityEngine;
 
-namespace Code.Services.SaveLoad
+namespace Code.Providers.SaveLoad
 {
     public class SaveLoadRegistry : ISaveLoadRegistry
     {

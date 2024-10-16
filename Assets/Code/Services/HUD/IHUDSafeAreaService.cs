@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Code
+namespace Code.Services.HUD
 {
     public interface IHUDSafeAreaService
     {

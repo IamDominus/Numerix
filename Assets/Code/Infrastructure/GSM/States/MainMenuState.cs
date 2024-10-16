@@ -3,6 +3,8 @@ using Code.EventSystem;
 using Code.EventSystem.Events;
 using Code.Infrastructure.FSM;
 using Code.Infrastructure.GSM.Payloads;
+using Code.Services;
+using Code.Services.Ad;
 using Code.ViewControllers;
 
 namespace Code.Infrastructure.GSM.States
@@ -12,26 +14,26 @@ namespace Code.Infrastructure.GSM.States
         private readonly IViewController _mainMenuViewController;
         private readonly IEventBus _eventBus;
         private readonly GameStateMachine _gameStateMachine;
-        private readonly IAddService _addService;
+        private readonly IAdService _adService;
 
-        public MainMenuState(MainMenuViewController mainMenuViewController, IEventBus eventBus, GameStateMachine gameStateMachine, IAddService addService)
+        public MainMenuState(MainMenuViewController mainMenuViewController, IEventBus eventBus, GameStateMachine gameStateMachine, IAdService adService)
         {
             _mainMenuViewController = mainMenuViewController;
             _eventBus = eventBus;
             _gameStateMachine = gameStateMachine;
-            _addService = addService;
+            _adService = adService;
         }
 
         public void Enter()
         {
-            _addService.CreateAndShowBanner();
+            _adService.CreateAndShowBanner();
             _eventBus.Subscribe<PlayButtonClicked>(OnPlayButtonClicked);
             _mainMenuViewController.Show();
         }
 
         public void Exit()
         {
-            _addService.DestroyBanner();
+            _adService.DestroyBanner();
             _eventBus.Unsubscribe<PlayButtonClicked>(OnPlayButtonClicked);
             _mainMenuViewController.Hide();
         }

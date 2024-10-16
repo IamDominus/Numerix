@@ -1,27 +1,47 @@
-﻿using Code.Gameplay;
+﻿using System.Linq;
+using Code.Data;
+using Code.Providers;
+using Code.Providers.SaveLoad;
+using Code.Services.SaveLoad;
 using Code.Utils;
 using UnityEngine;
 using Zenject;
 
-namespace Code.Providers
+namespace Code.Gameplay.Providers
 {
-    public class LevelDataProvider : IInitializable, ILevelDataProvider
+    public class LevelDataProvider : IInitializable, ILevelDataProvider, IGameSaveWriter
     {
         private readonly ISelectedLevelProvider _selectedLevelProvider;
+        private readonly IGameSaveProvider _gameSaveProvider;
+        private readonly ISaveLoadRegistry _saveLoadRegistry;
         public Block[,] Blocks { get; private set; }
 
         private DropOutStack<BlockModel[,]> _blockModels;
         private DropOutStack<Vector2Int> _moveDirections;
 
-        public LevelDataProvider(ISelectedLevelProvider selectedLevelProvider)
+        public LevelDataProvider(ISelectedLevelProvider selectedLevelProvider, IGameSaveProvider gameSaveProvider, ISaveLoadRegistry saveLoadRegistry)
         {
             _selectedLevelProvider = selectedLevelProvider;
+            _gameSaveProvider = gameSaveProvider;
+            _saveLoadRegistry = saveLoadRegistry;
         }
 
         public void Initialize()
         {
-            _blockModels = new DropOutStack<BlockModel[,]>(Constants.MAX_UNDO + 1);
-            _moveDirections = new DropOutStack<Vector2Int>(Constants.MAX_UNDO + 1);
+            _saveLoadRegistry.RegisterSaveWriter(this);
+            var levelData = _gameSaveProvider.Data.GetOrCreateLevelSaveData(_selectedLevelProvider.Level.Value);
+
+            if (levelData.IsEmpty())
+            {
+                _blockModels = new DropOutStack<BlockModel[,]>(Constants.MAX_UNDO + 1);
+                _moveDirections = new DropOutStack<Vector2Int>(Constants.MAX_UNDO + 1);
+            }
+            else
+            {
+                _blockModels = new DropOutStack<BlockModel[,]>(Constants.MAX_UNDO + 1, levelData.BlockModels);
+                _moveDirections = new DropOutStack<Vector2Int>(Constants.MAX_UNDO + 1, levelData.MoveDirections);
+            }
+
             Blocks = new Block[_selectedLevelProvider.Level.Value.x, _selectedLevelProvider.Level.Value.y];
         }
 
@@ -46,6 +66,11 @@ namespace Code.Providers
             return _blockModels.Pop();
         }
 
+        public BlockModel[,] PeekPreviousTurnBlockModels()
+        {
+            return _blockModels.Peek();
+        }
+
         public Vector2Int PopPreviousTurnMoveDirection()
         {
             return _moveDirections.Pop();
@@ -53,7 +78,7 @@ namespace Code.Providers
 
         public void SaveLevelState(Vector2Int moveDirection)
         {
-            var blockModels = new BlockModel[_selectedLevelProvider.Level.Value.x, _selectedLevelProvider.Level.Value.y];
+            var blockModels = new BlockModel[Blocks.GetLength(0), Blocks.GetLength(1)];
             for (int x = 0; x < Blocks.GetLength(0); x++)
             {
                 for (int y = 0; y < Blocks.GetLength(1); y++)
@@ -68,12 +93,13 @@ namespace Code.Providers
 
             _blockModels.Push(blockModels);
             _moveDirections.Push(moveDirection);
-
-            //TODO call save load service here
         }
 
-        public void Load()
+        public void SaveGameData(GameSaveData data)
         {
+            var levelData = data.GetOrCreateLevelSaveData(_selectedLevelProvider.Level.Value);
+            levelData.BlockModels = _blockModels.ToList();
+            levelData.MoveDirections = _moveDirections.ToList();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Code.Providers
+namespace Code.Gameplay.Providers
 {
     public interface IDynamicBoundsProvider
     {

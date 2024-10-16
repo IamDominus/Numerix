@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Code.Gameplay;
+using Code.Gameplay.Providers;
 using Code.Gameplay.Views;
 using Code.Infrastructure.Factories;
 using Code.Providers;
@@ -8,7 +9,7 @@ using Code.Utils;
 using UnityEngine;
 using Random = System.Random;
 
-namespace Code.Services
+namespace Code.Services.Spawn
 {
     public class SpawnService : ISpawnService
     {
