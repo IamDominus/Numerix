@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using Code.EventSystem;
-using Code.EventSystem.Events;
 using Code.Infrastructure.Factories;
 using Code.Providers.GameObject;
 using Code.ViewEntities;
@@ -12,14 +10,12 @@ namespace Code.ViewControllers
     {
         private readonly IUIFactory _uiFactory;
         private readonly IMainMenuObjectsProvider _objectsProvider;
-        private readonly IEventBus _eventBus;
         private MainMenuView _mainMenuView;
 
-        public MainMenuViewController(IUIFactory uiFactory, IMainMenuObjectsProvider objectsProvider, IEventBus eventBus)
+        public MainMenuViewController(IUIFactory uiFactory, IMainMenuObjectsProvider objectsProvider)
         {
             _uiFactory = uiFactory;
             _objectsProvider = objectsProvider;
-            _eventBus = eventBus;
         }
 
         public void Show()
@@ -27,22 +23,11 @@ namespace Code.ViewControllers
             _mainMenuView ??= _uiFactory.CreateMainMenu(_objectsProvider.MainMenuParentParent);
             var mainMenuViewEntity = GetMainMenuViewEntity();
             _mainMenuView.Show(mainMenuViewEntity);
-            InitializeDefaultFieldSize();
         }
 
         public void Hide()
         {
             _mainMenuView.Hide();
-        }
-
-        private void InitializeDefaultFieldSize()
-        {
-            var resizeFieldEvent = new ResizeFieldEvent()
-            {
-                X = Constants.DIMENSIONS.x,
-                Y = Constants.DIMENSIONS.y
-            };
-            _eventBus.Invoke(resizeFieldEvent);
         }
 
         private MainMenuViewEntity GetMainMenuViewEntity()

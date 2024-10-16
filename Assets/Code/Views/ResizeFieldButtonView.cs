@@ -1,5 +1,5 @@
-﻿using Code.EventSystem;
-using Code.EventSystem.Events;
+﻿using Code.Providers;
+using Code.Services.SaveLoad;
 using Code.ViewEntities;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,37 +14,33 @@ namespace Code.Views
         [SerializeField] private Color _normalColor;
         [SerializeField] private Color _selectedColor;
 
-        private IEventBus _eventBus;
         private ResizeFieldButtonViewEntity _viewEntity;
+        private ISelectedLevelProvider _selectedLevelProvider;
 
         [Inject]
-        private void Construct(IEventBus eventBus)
+        private void Construct(ISelectedLevelProvider selectedLevelProvider, ISaveLoadService saveLoadService)
         {
-            _eventBus = eventBus;
+            _selectedLevelProvider = selectedLevelProvider;
         }
 
         public void Show(ResizeFieldButtonViewEntity viewEntity)
         {
             _viewEntity = viewEntity;
             _button.interactable = viewEntity.Interactable;
+            ChangeButtonColor(_selectedLevelProvider.Level.Value);
+            
             _button.onClick.AddListener(OnButtonClicked);
-            _eventBus.Subscribe<ResizeFieldEvent>(OnResizeButtonClicked);
+            _selectedLevelProvider.Level.ValueChanged += ChangeButtonColor;
         }
 
         private void OnButtonClicked()
         {
-            Constants.DIMENSIONS = new Vector2Int(_viewEntity.X, _viewEntity.Y);
-            var resizeFieldEvent = new ResizeFieldEvent()
-            {
-                X = _viewEntity.X,
-                Y = _viewEntity.Y
-            };
-            _eventBus.Invoke(resizeFieldEvent);
+            _selectedLevelProvider.Level.Value = new Vector2Int(_viewEntity.X, _viewEntity.Y);
         }
 
-        private void OnResizeButtonClicked(ResizeFieldEvent payload)
+        private void ChangeButtonColor(Vector2Int selectedButton)
         {
-            if (_viewEntity.Y > payload.Y || _viewEntity.X > payload.X)
+            if (_viewEntity.Y > selectedButton.y || _viewEntity.X > selectedButton.x)
             {
                 _buttonImage.color = _normalColor;
             }
@@ -56,7 +52,7 @@ namespace Code.Views
 
         private void OnDestroy()
         {
-            _eventBus.Unsubscribe<ResizeFieldEvent>(OnResizeButtonClicked);
+            _selectedLevelProvider.Level.ValueChanged -= ChangeButtonColor;
             _button.onClick.RemoveListener(OnButtonClicked);
         }
     }

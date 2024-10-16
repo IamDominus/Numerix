@@ -1,4 +1,5 @@
 ﻿using Code.Gameplay;
+using Code.Gameplay.Facades;
 using Code.Gameplay.Features;
 using Code.Infrastructure.Factories;
 using Code.Infrastructure.FSM;
@@ -14,7 +15,6 @@ namespace Code.Infrastructure.Installers
     public class LevelInstaller : MonoInstaller
     {
         public LevelObjectsProvider LevelObjectsProvider;
-        public FieldSizeHelper FieldSizeHelper;
         public InputService InputService;
 
         public override void InstallBindings()
@@ -34,8 +34,8 @@ namespace Code.Infrastructure.Installers
             BindControllers();
 
             BindGameStateMachine();
-            
-            Container.Bind<FieldSizeHelper>().FromInstance(FieldSizeHelper).AsSingle();
+
+            Container.BindInterfacesTo<HUDSafeAreaService>().AsSingle();
         }
 
         private void BindObjectsCreationServices()
@@ -46,7 +46,7 @@ namespace Code.Infrastructure.Installers
 
         private void BindDataServices()
         {
-            Container.BindInterfacesAndSelfTo<LevelDataRepository>().AsSingle();
+            Container.BindInterfacesAndSelfTo<LevelDataProvider>().AsSingle();
         }
 
         private void BindControllers()
@@ -62,9 +62,11 @@ namespace Code.Infrastructure.Installers
 
         private void BindGameplayFeatures()
         {
-            Container.BindInterfacesAndSelfTo<PlayerTurnService>().AsSingle();
-            Container.BindInterfacesTo<MoveBlocksService>().AsSingle();
-            Container.BindInterfacesAndSelfTo<UndoMoveBlocksService>().AsSingle();
+            Container.BindInterfacesTo<MoveBlocksFacade>().AsSingle();
+            Container.BindInterfacesTo<UndoMoveBlocksFacade>().AsSingle();
+            
+            Container.BindInterfacesTo<MoveBlocksFeature>().AsSingle();
+            Container.BindInterfacesTo<UndoMoveBlocksFeature>().AsSingle();
         }
 
         private void BindInput()

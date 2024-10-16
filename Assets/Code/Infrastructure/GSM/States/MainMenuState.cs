@@ -4,7 +4,6 @@ using Code.EventSystem.Events;
 using Code.Infrastructure.FSM;
 using Code.Infrastructure.GSM.Payloads;
 using Code.ViewControllers;
-using Cysharp.Threading.Tasks;
 
 namespace Code.Infrastructure.GSM.States
 {

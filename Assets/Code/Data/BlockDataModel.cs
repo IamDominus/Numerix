@@ -1,5 +1,8 @@
-﻿namespace Code.Data
+﻿using System;
+
+namespace Code.Data
 {
+    [Serializable]
     public class BlockDataModel
     {
         public bool MergedThisTurn;

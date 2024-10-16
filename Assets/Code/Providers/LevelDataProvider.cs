@@ -1,31 +1,28 @@
 ﻿using Code.Gameplay;
-using Code.StaticData;
 using Code.Utils;
 using UnityEngine;
 using Zenject;
 
 namespace Code.Providers
 {
-    public class LevelDataRepository : IInitializable, ILevelDataRepository
+    public class LevelDataProvider : IInitializable, ILevelDataProvider
     {
+        private readonly ISelectedLevelProvider _selectedLevelProvider;
         public Block[,] Blocks { get; private set; }
 
-        private readonly IStaticDataProvider _staticDataProvider;
-        // private LevelStaticData _staticData;
         private DropOutStack<BlockModel[,]> _blockModels;
         private DropOutStack<Vector2Int> _moveDirections;
 
-        public LevelDataRepository(IStaticDataProvider staticDataProvider)
+        public LevelDataProvider(ISelectedLevelProvider selectedLevelProvider)
         {
-            _staticDataProvider = staticDataProvider;
+            _selectedLevelProvider = selectedLevelProvider;
         }
 
         public void Initialize()
         {
-            // _staticData = _staticDataProvider.GetLevelStaticData(Constants.DIMENSIONS);
             _blockModels = new DropOutStack<BlockModel[,]>(Constants.MAX_UNDO + 1);
             _moveDirections = new DropOutStack<Vector2Int>(Constants.MAX_UNDO + 1);
-            Blocks = new Block[Constants.DIMENSIONS.x, Constants.DIMENSIONS.y];
+            Blocks = new Block[_selectedLevelProvider.Level.Value.x, _selectedLevelProvider.Level.Value.y];
         }
 
         public void AddBlock(Block block)
@@ -54,9 +51,9 @@ namespace Code.Providers
             return _moveDirections.Pop();
         }
 
-        public void SaveTurn(Vector2Int moveDirection)
+        public void SaveLevelState(Vector2Int moveDirection)
         {
-            var blockModels = new BlockModel[Constants.DIMENSIONS.x, Constants.DIMENSIONS.y];
+            var blockModels = new BlockModel[_selectedLevelProvider.Level.Value.x, _selectedLevelProvider.Level.Value.y];
             for (int x = 0; x < Blocks.GetLength(0); x++)
             {
                 for (int y = 0; y < Blocks.GetLength(1); y++)

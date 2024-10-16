@@ -5,6 +5,7 @@ using Code.Infrastructure.GSM;
 using Code.Infrastructure.GSM.States;
 using Code.Infrastructure.Runners;
 using Code.Providers;
+using Code.Services.SaveLoad;
 using Zenject;
 
 namespace Code.Infrastructure.Installers
@@ -21,9 +22,19 @@ namespace Code.Infrastructure.Installers
             Container.BindInterfacesTo<EventBus>().AsSingle();
             Container.BindInterfacesTo<UIFactory>().AsSingle();
             
+            BindSaveLoad();
+
             BindLoadingCurtain();
 
             BindGameStateMachine();
+        }
+
+        private void BindSaveLoad()
+        {
+            Container.BindInterfacesTo<SelectedLevelProvider>().AsSingle();
+            Container.BindInterfacesTo<SaveLoadService>().AsSingle();
+            Container.BindInterfacesTo<SaveLoadRegistry>().AsSingle();
+            Container.BindInterfacesTo<GameSaveProvider>().AsSingle();
         }
 
         private void BindLoadingCurtain()
@@ -46,6 +57,7 @@ namespace Code.Infrastructure.Installers
             Container.Bind<GameStateMachine>().AsCached();
             Container.BindInterfacesAndSelfTo<BootstrapState>().AsSingle();
             Container.BindInterfacesAndSelfTo<LoadSceneState>().AsSingle();
+            Container.BindInterfacesAndSelfTo<LoadGameState>().AsSingle();
         }
     }
 }

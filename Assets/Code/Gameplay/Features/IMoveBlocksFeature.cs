@@ -2,9 +2,8 @@
 
 namespace Code.Gameplay.Features
 {
-    public interface IMoveBlocksService
+    public interface IMoveBlocksFeature
     {
         void MoveBlocks(Vector2Int direction);
-        void ResetBlocksFlags();
     }
 }

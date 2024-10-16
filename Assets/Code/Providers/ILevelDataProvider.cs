@@ -3,12 +3,12 @@ using UnityEngine;
 
 namespace Code.Providers
 {
-    public interface ILevelDataRepository : IBlocksProvider
+    public interface ILevelDataProvider : IBlocksProvider
     {
         void AddBlock(Block block);
         int TurnHistoryCount();
         BlockModel[,] PopPreviousTurnBlockModels();
         Vector2Int PopPreviousTurnMoveDirection();
-        void SaveTurn(Vector2Int moveDirection);
+        void SaveLevelState(Vector2Int moveDirection);
     }
 }

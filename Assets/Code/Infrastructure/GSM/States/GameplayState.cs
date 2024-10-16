@@ -1,38 +1,31 @@
 ﻿using Code.Enums;
 using Code.EventSystem;
 using Code.EventSystem.Events;
-using Code.Gameplay;
 using Code.Infrastructure.FSM;
 using Code.Infrastructure.GSM.Payloads;
-using Cysharp.Threading.Tasks;
+using Code.Services;
 
 namespace Code.Infrastructure.GSM.States
 {
     public class GameplayState : IState
     {
-        private readonly IPlayerTurnService _playerTurnService;
         private readonly IEventBus _eventBus;
         private readonly GameStateMachine _gameStateMachine;
         private readonly IAddService _addService;
-        private readonly FieldSizeHelper _fieldSizeHelper;
+        private readonly IInputService _inputService;
 
-        public GameplayState(IPlayerTurnService playerTurnService, IEventBus eventBus, GameStateMachine gameStateMachine, IAddService addService,
-            FieldSizeHelper fieldSizeHelper)
+        public GameplayState(IEventBus eventBus, GameStateMachine gameStateMachine, IAddService addService, IInputService inputService)
         {
-            _playerTurnService = playerTurnService;
             _eventBus = eventBus;
             _gameStateMachine = gameStateMachine;
             _addService = addService;
-            _fieldSizeHelper = fieldSizeHelper;
+            _inputService = inputService;
         }
 
         public void Enter()
         {
-            // _addService.CreateAndShowBanner();
-            _playerTurnService.Start();
+            _inputService.Enable();
             _eventBus.Subscribe<HomeButtonClicked>(OnHomeButtonClicked);
-
-            _fieldSizeHelper.Foo();
         }
 
         private void OnHomeButtonClicked()

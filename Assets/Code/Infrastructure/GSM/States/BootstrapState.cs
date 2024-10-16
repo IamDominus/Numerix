@@ -1,36 +1,24 @@
-﻿using Code.Enums;
-using Code.Infrastructure.FSM;
-using Code.Infrastructure.GSM.Payloads;
-using Cysharp.Threading.Tasks;
+﻿using Code.Infrastructure.FSM;
 
 namespace Code.Infrastructure.GSM.States
 {
     public class BootstrapState : IState
     {
         private readonly GameStateMachine _gameStateMachine;
-        private readonly IAddService _addService;
+        private readonly ILoadingCurtain _loadingCurtain;
 
-        public BootstrapState(GameStateMachine gameGameStateMachine, IAddService addService)
+        public BootstrapState(GameStateMachine gameGameStateMachine, ILoadingCurtain loadingCurtain)
         {
             _gameStateMachine = gameGameStateMachine;
-            _addService = addService;
+            _loadingCurtain = loadingCurtain;
         }
 
         public void Enter()
         {
-            Init().Forget();
+            _loadingCurtain.Show();
+            _gameStateMachine.Enter<LoadGameState>();
         }
 
-        private async UniTask Init()
-        {
-            await UniTask.WaitUntil(() => _addService.IsInitialized);
-            var payload = new LoadScenePayload()
-            {
-                SceneName = SceneName.MainMenu,
-                Callback = () => _gameStateMachine.Enter<MainMenuState>()
-            };
-            _gameStateMachine.Enter<LoadSceneState, LoadScenePayload>(payload);
-        }
         public void Exit()
         {
         }

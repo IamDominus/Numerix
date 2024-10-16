@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using Code.Enums;
 using Code.Gameplay;
 using Code.Utils;
 using UnityEngine;
@@ -10,7 +8,13 @@ namespace Code.Data
     [Serializable]
     public class LevelSaveData
     {
-        public DropOutStack<Block[,]> BlocksStack;
-        public DropOutStack<Vector2Int> MoveDirections;
+        private DropOutStack<BlockModel[,]> BlockModels;
+        private DropOutStack<Vector2Int> MoveDirections;
+
+        public LevelSaveData()
+        {
+            BlockModels = new DropOutStack<BlockModel[,]>(Constants.MAX_UNDO);
+            MoveDirections = new DropOutStack<Vector2Int>(Constants.MAX_UNDO);
+        }
     }
 }

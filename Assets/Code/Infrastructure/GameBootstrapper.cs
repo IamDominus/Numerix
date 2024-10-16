@@ -18,9 +18,10 @@ namespace Code.Infrastructure
             _stateFactory = stateFactory;
         }
 
-        private void Awake()
+        private void Start()
         {
             _gameStateMachine.RegisterState(_stateFactory.Create<BootstrapState>());
+            _gameStateMachine.RegisterState(_stateFactory.Create<LoadGameState>());
             _gameStateMachine.RegisterState(_stateFactory.Create<LoadSceneState>());
 
             _gameStateMachine.Enter<BootstrapState>();

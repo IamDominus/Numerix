@@ -1,7 +1,6 @@
 ﻿namespace Code.EventSystem.Events
 {
-    public class PlayButtonClicked
+    public class PlayButtonClicked : IEvent
     {
-        
     }
 }

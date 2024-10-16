@@ -14,25 +14,27 @@ namespace Code.Services
     {
         private readonly Transform _parent;
         private readonly IDynamicBoundsProvider _dynamicBoundsProvider;
-        private readonly ILevelDataRepository _levelDataRepository;
+        private readonly ILevelDataProvider _levelDataProvider;
+        private readonly ISelectedLevelProvider _selectedLevelProvider;
         private readonly IGameFactory _gameFactory;
         private readonly Random _random;
 
         public SpawnService(ILevelObjectsProvider levelObjectsProvider, IDynamicBoundsProvider dynamicBoundsProvider, IGameFactory gameFactory,
-            ILevelDataRepository levelDataRepository)
+            ILevelDataProvider levelDataProvider, ISelectedLevelProvider selectedLevelProvider)
         {
             _parent = levelObjectsProvider.CellsParent;
             _dynamicBoundsProvider = dynamicBoundsProvider;
             _gameFactory = gameFactory;
-            _levelDataRepository = levelDataRepository;
+            _levelDataProvider = levelDataProvider;
+            _selectedLevelProvider = selectedLevelProvider;
             _random = new Random();
         }
 
         public void SpawnCells()
         {
-            for (var x = 0; x < Constants.DIMENSIONS.x; x++)
+            for (var x = 0; x < _selectedLevelProvider.Level.Value.x; x++)
             {
-                for (var y = 0; y < Constants.DIMENSIONS.y; y++)
+                for (var y = 0; y < _selectedLevelProvider.Level.Value.y; y++)
                 {
                     var position = _dynamicBoundsProvider.GetBlockInWorldPosition(x, y);
                     var size = _dynamicBoundsProvider.CellSize;
@@ -45,12 +47,12 @@ namespace Code.Services
         {
             var wordPosition = _dynamicBoundsProvider.GetBlockInWorldPosition(blockModel.Position.x, blockModel.Position.y);
             var block = _gameFactory.CreateBlock(blockModel, wordPosition, _parent, _dynamicBoundsProvider.CellSize, blockModel.Value);
-            _levelDataRepository.AddBlock(block);
+            _levelDataProvider.AddBlock(block);
         }
 
         public void SpawnRandomBlock()
         {
-            if (TryGetRandomPosition(_levelDataRepository.Blocks, out var position))
+            if (TryGetRandomPosition(_levelDataProvider.Blocks, out var position))
             {
                 var blockModel = new BlockModel(2, position);
                 SpawnBlock(blockModel);
@@ -65,7 +67,7 @@ namespace Code.Services
 
         public bool AbleToSpawnRandomBlock()
         {
-            return TryGetRandomPosition(_levelDataRepository.Blocks, out _);
+            return TryGetRandomPosition(_levelDataProvider.Blocks, out _);
         }
 
         private bool TryGetRandomPosition<T>(T[,] array, out Vector2Int position)

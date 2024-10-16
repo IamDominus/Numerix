@@ -1,34 +1,26 @@
 ﻿using Code.Providers;
 using Code.Services;
 using Code.Utils;
-using Cysharp.Threading.Tasks;
 
 namespace Code.Gameplay.Features
 {
-    public class UndoMoveBlocksService : IUndoMoveBlocksService
+    public class UndoMoveBlocksFeature : IUndoMoveBlocksFeature
     {
-        private Block[,] Blocks => _levelDataRepository.Blocks;
+        private Block[,] Blocks => _levelDataProvider.Blocks;
 
         private readonly ISpawnService _spawnService;
-        private readonly IInputService _inputService;
-        private readonly ILevelDataRepository _levelDataRepository;
+        private readonly ILevelDataProvider _levelDataProvider;
 
-        public UndoMoveBlocksService(ISpawnService spawnService, IInputService inputService, ILevelDataRepository levelDataRepository)
+        public UndoMoveBlocksFeature(ISpawnService spawnService, ILevelDataProvider levelDataProvider)
         {
             _spawnService = spawnService;
-            _inputService = inputService;
-            _levelDataRepository = levelDataRepository;
+            _levelDataProvider = levelDataProvider;
         }
 
-        public async UniTask UndoTurn()
+        public void UndoMoveBlocks()
         {
-            // TODO move out async logic 
-            if (_levelDataRepository.TurnHistoryCount() <= 0)
-                return;
-            _inputService.Disable();
-
-            var oldModels = _levelDataRepository.PopPreviousTurnBlockModels();
-            var undoDirection = _levelDataRepository.PopPreviousTurnMoveDirection() * -1;
+            var oldModels = _levelDataProvider.PopPreviousTurnBlockModels();
+            var undoDirection = _levelDataProvider.PopPreviousTurnMoveDirection() * -1;
 
             var xMax = Blocks.GetLength(0);
             var yMax = Blocks.GetLength(1);
@@ -44,9 +36,6 @@ namespace Code.Gameplay.Features
                     }
                 }
             }
-
-            await UniTask.WaitForSeconds(Constants.MOVE_ANIMATION_TIME_SEC);
-            _inputService.Enable();
         }
 
         private void ProcessBlock(BlockModel[,] oldModels, Block block, int x, int y)

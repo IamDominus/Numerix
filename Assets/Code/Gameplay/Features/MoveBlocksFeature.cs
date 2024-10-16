@@ -3,32 +3,17 @@ using UnityEngine;
 
 namespace Code.Gameplay.Features
 {
-    public class MoveBlocksService : IMoveBlocksService
+    public class MoveBlocksFeature : IMoveBlocksFeature
     {
         private Block[,] Blocks => _blocksProvider.Blocks;
 
         private readonly IBlocksProvider _blocksProvider;
         private readonly IBlocksValidationService _blocksValidationService;
 
-        public MoveBlocksService(IBlocksProvider blocksProvider, IBlocksValidationService blocksValidationService)
+        public MoveBlocksFeature(IBlocksProvider blocksProvider, IBlocksValidationService blocksValidationService)
         {
             _blocksProvider = blocksProvider;
             _blocksValidationService = blocksValidationService;
-        }
-
-        public void ResetBlocksFlags()
-        {
-            for (int x = 0; x < Blocks.GetLength(0); x++)
-            {
-                for (int y = 0; y < Blocks.GetLength(1); y++)
-                {
-                    var block = Blocks[x, y];
-                    if (block != null)
-                    {
-                        block.ResetFlags();
-                    }
-                }
-            }
         }
 
         public void MoveBlocks(Vector2Int direction)
@@ -47,6 +32,23 @@ namespace Code.Gameplay.Features
                     }
 
                     MoveOrMergeBlock(block, direction.x, direction.y);
+                }
+            }
+
+            ResetBlocksFlags();
+        }
+
+        private void ResetBlocksFlags()
+        {
+            for (int x = 0; x < Blocks.GetLength(0); x++)
+            {
+                for (int y = 0; y < Blocks.GetLength(1); y++)
+                {
+                    var block = Blocks[x, y];
+                    if (block != null)
+                    {
+                        block.ResetFlags();
+                    }
                 }
             }
         }

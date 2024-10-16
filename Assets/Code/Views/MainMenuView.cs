@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Code.EventSystem;
 using Code.EventSystem.Events;
+using Code.Providers;
 using Code.ViewEntities;
 using TMPro;
 using UnityEngine;
@@ -15,16 +16,18 @@ namespace Code.Views
         [SerializeField] private Button _playButton;
         [SerializeField] private TMP_Text _dimensionsText;
         private IEventBus _eventBus;
+        private ISelectedLevelProvider _selectedLevelProvider;
 
         [Inject]
-        private void Construct(IEventBus eventBus)
+        private void Construct(IEventBus eventBus, ISelectedLevelProvider selectedLevelProvider)
         {
+            _selectedLevelProvider = selectedLevelProvider;
             _eventBus = eventBus;
         }
 
         private void Awake()
         {
-            _eventBus.Subscribe<ResizeFieldEvent>(OnResizeField);
+            _selectedLevelProvider.Level.ValueChanged += ChangeDimensionsText;
         }
 
         public void Show(MainMenuViewEntity viewEntity)
@@ -34,6 +37,7 @@ namespace Code.Views
                 _resizeFieldButtonViews[i].Show(viewEntity.ResizeFieldButtonViewEntities[i]);
             }
 
+            ChangeDimensionsText(_selectedLevelProvider.Level.Value);
             _playButton.onClick.AddListener(PlayButtonClicked);
             gameObject.SetActive(true);
         }
@@ -43,9 +47,9 @@ namespace Code.Views
             _eventBus.Invoke<PlayButtonClicked>();
         }
 
-        private void OnResizeField(ResizeFieldEvent payload)
+        private void ChangeDimensionsText(Vector2Int newSize)
         {
-            _dimensionsText.text = $"{payload.X} X {payload.Y}";
+            _dimensionsText.text = $"{newSize.x} X {newSize.y}";
         }
 
         public void Hide()
@@ -57,7 +61,7 @@ namespace Code.Views
         private void Unsubscribe()
         {
             _playButton.onClick.RemoveListener(PlayButtonClicked);
-            _eventBus.Unsubscribe<ResizeFieldEvent>(OnResizeField);
+            _selectedLevelProvider.Level.ValueChanged -= ChangeDimensionsText;
         }
 
         private void OnDestroy()
