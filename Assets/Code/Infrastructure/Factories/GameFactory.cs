@@ -14,7 +14,7 @@ namespace Code.Infrastructure.Factories
 
         private readonly DiContainer _diContainer;
         private Cell _cellPrefab;
-        private Dictionary<long, BlockView> _blockViews;
+        private Dictionary<double, BlockView> _blockViews;
 
         public GameFactory(DiContainer diContainer)
         {
@@ -33,14 +33,14 @@ namespace Code.Infrastructure.Factories
             go.transform.localScale = size;
         }
 
-        public BlockView CreateBlockView(Vector2 position, Transform parent, Vector2 size, long value)
+        public BlockView CreateBlockView(Vector2 position, Transform parent, Vector2 size, double value)
         {
             var blockView = _diContainer.InstantiatePrefabForComponent<BlockView>(_blockViews[value], position, Quaternion.identity, parent);
             blockView.transform.localScale = size;
             return blockView;
         }
 
-        public Block CreateBlock(BlockModel blockModel, Vector2 position, Transform parent, Vector2 size, long value)
+        public Block CreateBlock(BlockModel blockModel, Vector2 position, Transform parent, Vector2 size, double value)
         {
             var blockView = CreateBlockView(position, parent, size, value);
             var block = _diContainer.Instantiate<Block>();

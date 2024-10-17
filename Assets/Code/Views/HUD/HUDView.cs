@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Code.Views
+namespace Code.Views.HUD
 {
     public class HUDView : MonoBehaviour
     {

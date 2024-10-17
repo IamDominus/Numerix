@@ -9,12 +9,12 @@ namespace Code.Gameplay
     {
         public bool MergedThisTurn { get; set; }
         public bool MovedThisTurn { get; set; }
-        public long Value { get; set; }
+        public double Value { get; set; }
         public Vector2Int Position { get; set; }
         public Vector2Int PreviousPosition1 { get; set; }
         public Vector2Int PreviousPosition2 { get; set; }
 
-        public BlockModel(long value, Vector2Int position)
+        public BlockModel(double value, Vector2Int position)
         {
             MergedThisTurn = false;
             MovedThisTurn = false;

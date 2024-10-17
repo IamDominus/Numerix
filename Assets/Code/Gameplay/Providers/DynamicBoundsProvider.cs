@@ -4,6 +4,7 @@ using Code.Services;
 using Code.Services.Ad;
 using Code.Services.HUD;
 using Code.Views;
+using Code.Views.HUD;
 using UnityEngine;
 
 namespace Code.Gameplay.Providers

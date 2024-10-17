@@ -4,6 +4,7 @@ using Code.Gameplay.Providers;
 using Code.Services;
 using Code.Services.Input;
 using Code.Services.SaveLoad;
+using Code.Services.Score;
 using Code.Services.Spawn;
 using Code.Utils;
 using Cysharp.Threading.Tasks;
@@ -20,9 +21,10 @@ namespace Code.Gameplay.Facades
         private readonly IBlocksValidationService _blocksValidationService;
         private readonly ILevelDataProvider _levelDataProvider;
         private readonly ISaveLoadService _saveLoadService;
+        private readonly IScoreService _scoreService;
 
         public MoveBlocksFacade(IInputService inputService, ISpawnService spawnService, Features.IMoveBlocksFeature moveBlocksFeature,
-            IBlocksValidationService blocksValidationService, ILevelDataProvider levelDataProvider, ISaveLoadService saveLoadService)
+            IBlocksValidationService blocksValidationService, ILevelDataProvider levelDataProvider, ISaveLoadService saveLoadService, IScoreService scoreService)
         {
             _inputService = inputService;
             _spawnService = spawnService;
@@ -30,6 +32,7 @@ namespace Code.Gameplay.Facades
             _blocksValidationService = blocksValidationService;
             _levelDataProvider = levelDataProvider;
             _saveLoadService = saveLoadService;
+            _scoreService = scoreService;
         }
 
         public void Initialize()
@@ -55,6 +58,7 @@ namespace Code.Gameplay.Facades
             if (_spawnService.AbleToSpawnRandomBlock())
             {
                 _spawnService.SpawnRandomBlock();
+                _scoreService.UpdateScore();
                 _levelDataProvider.SaveLevelState(moveDirection);
                 _inputService.Enable();
             }

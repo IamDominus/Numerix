@@ -16,10 +16,12 @@ namespace Code.Views
 
         private ResizeFieldButtonViewEntity _viewEntity;
         private ISelectedLevelProvider _selectedLevelProvider;
+        private ISaveLoadService _saveLoadService;
 
         [Inject]
         private void Construct(ISelectedLevelProvider selectedLevelProvider, ISaveLoadService saveLoadService)
         {
+            _saveLoadService = saveLoadService;
             _selectedLevelProvider = selectedLevelProvider;
         }
 
@@ -36,6 +38,7 @@ namespace Code.Views
         private void OnButtonClicked()
         {
             _selectedLevelProvider.Level.Value = new Vector2Int(_viewEntity.X, _viewEntity.Y);
+            _saveLoadService.SaveGameData();
         }
 
         private void ChangeButtonColor(Vector2Int selectedButton)

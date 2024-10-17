@@ -25,12 +25,10 @@ namespace Code.Utils
             }
 
             _items = new T[capacity];
-            _count = data.Count;
-            _top = _count;
 
-            for (var i = 0; i < _count; i++)
+            foreach (var item in data)
             {
-                _items[i] = data[i];
+                Push(item);
             }
         }
 
@@ -89,7 +87,7 @@ namespace Code.Utils
 
         public List<T> ToList()
         {
-            var list = new List<T>();
+            var list = new List<T>(_count);
 
             for (var i = _count - 1; i >= 0; i--)
             {

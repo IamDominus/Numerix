@@ -11,7 +11,8 @@ namespace Code.Data
         public Vector2Int LevelDimensions;
         public List<BlockModel[,]> BlockModels;
         public List<Vector2Int> MoveDirections;
-
+        public double MaxScore;
+        
         public LevelSaveData()
         {
             BlockModels = new List<BlockModel[,]>();

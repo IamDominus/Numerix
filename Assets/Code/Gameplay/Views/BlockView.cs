@@ -9,7 +9,7 @@ namespace Code.Gameplay.Views
 {
     public class BlockView : MonoBehaviour
     {
-        public long Value;
+        public double Value;
 
         [SerializeField] private TMP_Text _text;
 
@@ -21,6 +21,7 @@ namespace Code.Gameplay.Views
         private void Construct(IDynamicBoundsProvider dynamicBoundsProvider)
         {
             _dynamicBoundsProvider = dynamicBoundsProvider;
+            //TODO ad format
             _text.text = Value.ToString();
         }
 

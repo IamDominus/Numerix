@@ -10,6 +10,7 @@ using Code.Providers.GameObject;
 using Code.Services;
 using Code.Services.HUD;
 using Code.Services.Input;
+using Code.Services.Score;
 using Code.Services.Spawn;
 using Zenject;
 
@@ -39,6 +40,7 @@ namespace Code.Infrastructure.Installers
             BindGameStateMachine();
 
             Container.BindInterfacesTo<HUDSafeAreaService>().AsSingle();
+            Container.BindInterfacesTo<ScoreService>().AsSingle();
         }
 
         private void BindObjectsCreationServices()

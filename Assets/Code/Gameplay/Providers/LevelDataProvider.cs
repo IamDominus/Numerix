@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System;
 using Code.Data;
 using Code.Providers;
 using Code.Providers.SaveLoad;
@@ -9,7 +9,7 @@ using Zenject;
 
 namespace Code.Gameplay.Providers
 {
-    public class LevelDataProvider : IInitializable, ILevelDataProvider, IGameSaveWriter
+    public class LevelDataProvider : IInitializable, ILevelDataProvider, IGameSaveWriter, IDisposable
     {
         private readonly ISelectedLevelProvider _selectedLevelProvider;
         private readonly IGameSaveProvider _gameSaveProvider;
@@ -100,6 +100,11 @@ namespace Code.Gameplay.Providers
             var levelData = data.GetOrCreateLevelSaveData(_selectedLevelProvider.Level.Value);
             levelData.BlockModels = _blockModels.ToList();
             levelData.MoveDirections = _moveDirections.ToList();
+        }
+
+        public void Dispose()
+        {
+            _saveLoadRegistry.UnregisterSaveWriter(this);
         }
     }
 }

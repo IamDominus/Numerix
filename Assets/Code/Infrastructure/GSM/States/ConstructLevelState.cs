@@ -1,7 +1,6 @@
 ﻿using Code.Data;
 using Code.Gameplay.Providers;
 using Code.Infrastructure.FSM;
-using Code.Providers;
 using Code.Providers.SaveLoad;
 using Code.Services;
 using Code.Services.Ad;
@@ -20,10 +19,9 @@ namespace Code.Infrastructure.GSM.States
         private readonly IDynamicBoundsProvider _dynamicBoundsProvider;
         private readonly ILevelDataProvider _levelDataProvider;
         private readonly IGameSaveProvider _gameSaveProvider;
-        private readonly ISelectedLevelProvider _selectedLevelProvider;
 
         public ConstructLevelState(ISpawnService spawnService, GameStateMachine gameStateMachine, IAdService adService,
-            IDynamicBoundsProvider dynamicBoundsProvider, ILevelDataProvider levelDataProvider, IGameSaveProvider gameSaveProvider, ISelectedLevelProvider selectedLevelProvider)
+            IDynamicBoundsProvider dynamicBoundsProvider, ILevelDataProvider levelDataProvider, IGameSaveProvider gameSaveProvider)
         {
             _spawnService = spawnService;
             _gameStateMachine = gameStateMachine;
@@ -31,7 +29,6 @@ namespace Code.Infrastructure.GSM.States
             _dynamicBoundsProvider = dynamicBoundsProvider;
             _levelDataProvider = levelDataProvider;
             _gameSaveProvider = gameSaveProvider;
-            _selectedLevelProvider = selectedLevelProvider;
         }
 
         //TODO separate start logic from load saved level logic 
@@ -42,7 +39,7 @@ namespace Code.Infrastructure.GSM.States
             _dynamicBoundsProvider.Initialize();
             _spawnService.SpawnCells();
 
-            var levelData = _gameSaveProvider.Data.GetOrCreateLevelSaveData(_selectedLevelProvider.Level.Value);
+            var levelData = _gameSaveProvider.Data.GetCurrentLevelSaveData();
             if (levelData.IsEmpty() == false)
             {
                 var blockModels = _levelDataProvider.PeekPreviousTurnBlockModels();

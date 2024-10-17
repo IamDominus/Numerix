@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Code.Gameplay;
 using Code.Gameplay.Providers;
 using Code.Gameplay.Views;
@@ -55,7 +56,8 @@ namespace Code.Services.Spawn
         {
             if (TryGetRandomPosition(_levelDataProvider.Blocks, out var position))
             {
-                var blockModel = new BlockModel(2, position);
+                var value = _random.Next(0, 2) == 0 ? 2 : 4;
+                var blockModel = new BlockModel(value, position);
                 SpawnBlock(blockModel);
             }
         }
