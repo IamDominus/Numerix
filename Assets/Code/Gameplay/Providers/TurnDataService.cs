@@ -8,7 +8,7 @@ using Zenject;
 
 namespace Code.Gameplay.Providers
 {
-    public class LevelDataService : IInitializable, ILevelDataService, IGameSaveWriter, IDisposable
+    public class TurnDataService : IInitializable, ITurnDataService, IGameSaveWriter, IDisposable
     {
         private Block[,] Blocks => _blocksProvider.Blocks;
 
@@ -19,7 +19,7 @@ namespace Code.Gameplay.Providers
         private DropOutStack<BlockModel[,]> _blockModels;
         private DropOutStack<Vector2Int> _moveDirections;
 
-        public LevelDataService(IGameSaveProvider gameSaveProvider, ISaveLoadRegistry saveLoadRegistry, IBlocksProvider blocksProvider)
+        public TurnDataService(IGameSaveProvider gameSaveProvider, ISaveLoadRegistry saveLoadRegistry, IBlocksProvider blocksProvider)
         {
             _gameSaveProvider = gameSaveProvider;
             _saveLoadRegistry = saveLoadRegistry;

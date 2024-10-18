@@ -19,18 +19,18 @@ namespace Code.Gameplay.Facades
         private readonly ISpawnService _spawnService;
         private readonly Features.IMoveBlocksFeature _moveBlocksFeature;
         private readonly IBlocksValidationService _blocksValidationService;
-        private readonly ILevelDataService _levelDataService;
+        private readonly ITurnDataService _turnDataService;
         private readonly ISaveLoadService _saveLoadService;
         private readonly IScoreService _scoreService;
 
         public MoveBlocksFacade(IInputService inputService, ISpawnService spawnService, Features.IMoveBlocksFeature moveBlocksFeature,
-            IBlocksValidationService blocksValidationService, ILevelDataService levelDataService, ISaveLoadService saveLoadService, IScoreService scoreService)
+            IBlocksValidationService blocksValidationService, ITurnDataService turnDataService, ISaveLoadService saveLoadService, IScoreService scoreService)
         {
             _inputService = inputService;
             _spawnService = spawnService;
             _moveBlocksFeature = moveBlocksFeature;
             _blocksValidationService = blocksValidationService;
-            _levelDataService = levelDataService;
+            _turnDataService = turnDataService;
             _saveLoadService = saveLoadService;
             _scoreService = scoreService;
         }
@@ -59,7 +59,7 @@ namespace Code.Gameplay.Facades
             {
                 _spawnService.SpawnRandomBlock();
                 _scoreService.UpdateScore();
-                _levelDataService.PushTurn(moveDirection);
+                _turnDataService.PushTurn(moveDirection);
                 _inputService.Enable();
             }
 

@@ -1,5 +1,4 @@
 ﻿using Code.Gameplay.Providers;
-using Code.Services;
 using Code.Services.Spawn;
 using Code.Utils;
 
@@ -10,20 +9,20 @@ namespace Code.Gameplay.Features
         private Block[,] Blocks => _blocksProvider.Blocks;
 
         private readonly ISpawnService _spawnService;
-        private readonly ILevelDataService _levelDataService;
+        private readonly ITurnDataService _turnDataService;
         private readonly IBlocksProvider _blocksProvider;
 
-        public UndoMoveBlocksFeature(ISpawnService spawnService, ILevelDataService levelDataService, IBlocksProvider blocksProvider)
+        public UndoMoveBlocksFeature(ISpawnService spawnService, ITurnDataService turnDataService, IBlocksProvider blocksProvider)
         {
             _spawnService = spawnService;
-            _levelDataService = levelDataService;
+            _turnDataService = turnDataService;
             _blocksProvider = blocksProvider;
         }
 
         public void UndoMoveBlocks()
         {
-            var oldModels = _levelDataService.PopPreviousTurnBlockModels();
-            var undoDirection = _levelDataService.PopPreviousTurnMoveDirection() * -1;
+            var oldModels = _turnDataService.PopPreviousTurnBlockModels();
+            var undoDirection = _turnDataService.PopPreviousTurnMoveDirection() * -1;
 
             var xMax = Blocks.GetLength(0);
             var yMax = Blocks.GetLength(1);
@@ -43,7 +42,7 @@ namespace Code.Gameplay.Features
 
         private void ProcessBlock(BlockModel[,] oldModels, Block block, int x, int y)
         {
-            if (BlockWasPresentLastTurn(block))
+            if (BlockWasNotPresentLastTurn(block))
             {
                 DeleteBlock(block, x, y);
             }
@@ -103,7 +102,7 @@ namespace Code.Gameplay.Features
             block.Delete();
         }
 
-        private static bool BlockWasPresentLastTurn(Block block)
+        private static bool BlockWasNotPresentLastTurn(Block block)
         {
             return block.Model.PreviousPosition1 == VectorUtils.EMPTY;
         }

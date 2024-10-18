@@ -1,7 +1,6 @@
 ﻿using Code.Gameplay.Providers;
 using Code.Infrastructure.FSM;
 using Code.Providers.SaveLoad;
-using Code.Services.Ad;
 using Code.Services.Spawn;
 using Code.Utils;
 using UnityEngine;
@@ -12,29 +11,31 @@ namespace Code.Infrastructure.GSM.States
     {
         private readonly ISpawnService _spawnService;
         private readonly GameStateMachine _gameStateMachine;
-        private readonly IAdService _adService;
         private readonly IDynamicBoundsProvider _dynamicBoundsProvider;
-        private readonly ILevelDataService _levelDataService;
+        private readonly ITurnDataService _turnDataService;
         private readonly IGameSaveProvider _gameSaveProvider;
 
-        public ConstructLevelState(ISpawnService spawnService, GameStateMachine gameStateMachine, IAdService adService,
-            IDynamicBoundsProvider dynamicBoundsProvider, ILevelDataService levelDataService, IGameSaveProvider gameSaveProvider)
+        public ConstructLevelState(ISpawnService spawnService, GameStateMachine gameStateMachine, IDynamicBoundsProvider dynamicBoundsProvider,
+            ITurnDataService turnDataService, IGameSaveProvider gameSaveProvider)
         {
             _spawnService = spawnService;
             _gameStateMachine = gameStateMachine;
-            _adService = adService;
             _dynamicBoundsProvider = dynamicBoundsProvider;
-            _levelDataService = levelDataService;
+            _turnDataService = turnDataService;
             _gameSaveProvider = gameSaveProvider;
         }
 
         public void Enter()
         {
-            _adService.CreateAndShowBanner();
-
             _dynamicBoundsProvider.Initialize();
             _spawnService.SpawnCells();
+            InitializeBlocks();
 
+            _gameStateMachine.Enter<GameplayState>();
+        }
+
+        private void InitializeBlocks()
+        {
             var levelData = _gameSaveProvider.Data.GetCurrentLevelSaveData();
 
             if (levelData.IsNotEmpty())
@@ -45,24 +46,22 @@ namespace Code.Infrastructure.GSM.States
             {
                 SpawnRandomBlock();
             }
-
-            _gameStateMachine.Enter<GameplayState>();
         }
 
         private void SpawnRandomBlock()
         {
             _spawnService.SpawnRandomBlock();
-            _levelDataService.PushTurn(Vector2Int.up);
+            _turnDataService.PushTurn(Vector2Int.up);
         }
 
         private void SpawnBlocksFromSave()
         {
-            var blockModels = _levelDataService.PeekPreviousTurnBlockModels();
+            var blockModels = _turnDataService.PeekPreviousTurnBlockModels();
             foreach (var blockModel in blockModels)
             {
                 if (blockModel != null)
                 {
-                    _spawnService.SpawnBlock(blockModel);
+                    _spawnService.SpawnBlock(blockModel.Clone());
                 }
             }
         }

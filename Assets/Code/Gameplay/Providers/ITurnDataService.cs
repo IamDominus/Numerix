@@ -2,7 +2,7 @@
 
 namespace Code.Gameplay.Providers
 {
-    public interface ILevelDataService
+    public interface ITurnDataService
     {
         int TurnHistoryCount();
         BlockModel[,] PopPreviousTurnBlockModels();

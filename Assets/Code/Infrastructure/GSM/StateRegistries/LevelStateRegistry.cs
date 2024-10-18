@@ -20,12 +20,14 @@ namespace Code.Infrastructure.GSM.StateRegistries
         {
             _gameStateMachine.RegisterState(_stateFactory.Create<ConstructLevelState>());
             _gameStateMachine.RegisterState(_stateFactory.Create<GameplayState>());
+            _gameStateMachine.RegisterState(_stateFactory.Create<RestartLevelState>());
         }
 
         public void Dispose()
         {
             _gameStateMachine.UnregisterState<ConstructLevelState>();
             _gameStateMachine.UnregisterState<GameplayState>();
+            _gameStateMachine.UnregisterState<RestartLevelState>();
         }
     }
 }

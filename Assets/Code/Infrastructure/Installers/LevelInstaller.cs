@@ -48,7 +48,7 @@ namespace Code.Infrastructure.Installers
 
         private void BindBlocks()
         {
-            Container.BindInterfacesTo<LevelDataService>().AsSingle();
+            Container.BindInterfacesTo<TurnDataService>().AsSingle();
             Container.BindInterfacesTo<BlocksProvider>().AsSingle();
             Container.Bind<Block>().AsTransient();
         }
@@ -84,6 +84,7 @@ namespace Code.Infrastructure.Installers
             Container.Bind<StateFactory>().AsSingle();
             Container.BindInterfacesAndSelfTo<ConstructLevelState>().AsSingle();
             Container.BindInterfacesAndSelfTo<GameplayState>().AsSingle();
+            Container.BindInterfacesAndSelfTo<RestartLevelState>().AsSingle();
         }
     }
 }
