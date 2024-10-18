@@ -42,6 +42,7 @@ namespace Code.Infrastructure.GSM.States
 
         public void Exit()
         {
+            _inputService.Disable();
             _adService.DestroyBanner();
             _eventBus.Unsubscribe<HomeButtonClicked>(OnHomeButtonClicked);
         }

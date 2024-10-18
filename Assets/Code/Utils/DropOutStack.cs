@@ -83,6 +83,8 @@ namespace Code.Utils
         public void Clear()
         {
             _count = 0;
+            _top = 0;
+            Array.Clear(_items, 0, _items.Length);
         }
 
         public List<T> ToList()

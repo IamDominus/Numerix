@@ -7,21 +7,23 @@ namespace Code.Gameplay.Features
 {
     public class UndoMoveBlocksFeature : IUndoMoveBlocksFeature
     {
-        private Block[,] Blocks => _levelDataProvider.Blocks;
+        private Block[,] Blocks => _blocksProvider.Blocks;
 
         private readonly ISpawnService _spawnService;
-        private readonly ILevelDataProvider _levelDataProvider;
+        private readonly ILevelDataService _levelDataService;
+        private readonly IBlocksProvider _blocksProvider;
 
-        public UndoMoveBlocksFeature(ISpawnService spawnService, ILevelDataProvider levelDataProvider)
+        public UndoMoveBlocksFeature(ISpawnService spawnService, ILevelDataService levelDataService, IBlocksProvider blocksProvider)
         {
             _spawnService = spawnService;
-            _levelDataProvider = levelDataProvider;
+            _levelDataService = levelDataService;
+            _blocksProvider = blocksProvider;
         }
 
         public void UndoMoveBlocks()
         {
-            var oldModels = _levelDataProvider.PopPreviousTurnBlockModels();
-            var undoDirection = _levelDataProvider.PopPreviousTurnMoveDirection() * -1;
+            var oldModels = _levelDataService.PopPreviousTurnBlockModels();
+            var undoDirection = _levelDataService.PopPreviousTurnMoveDirection() * -1;
 
             var xMax = Blocks.GetLength(0);
             var yMax = Blocks.GetLength(1);

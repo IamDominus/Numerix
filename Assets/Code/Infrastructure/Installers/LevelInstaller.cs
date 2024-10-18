@@ -4,10 +4,9 @@ using Code.Gameplay.Features;
 using Code.Gameplay.Providers;
 using Code.Infrastructure.Factories;
 using Code.Infrastructure.FSM;
-using Code.Infrastructure.GSM.StateRegistrars;
+using Code.Infrastructure.GSM.StateRegistries;
 using Code.Infrastructure.GSM.States;
 using Code.Providers.GameObject;
-using Code.Services;
 using Code.Services.HUD;
 using Code.Services.Input;
 using Code.Services.Score;
@@ -33,9 +32,7 @@ namespace Code.Infrastructure.Installers
 
             BindHelpers();
 
-            BindDataServices();
-
-            BindControllers();
+            BindBlocks();
 
             BindGameStateMachine();
 
@@ -49,13 +46,10 @@ namespace Code.Infrastructure.Installers
             Container.BindInterfacesTo<GameFactory>().AsSingle();
         }
 
-        private void BindDataServices()
+        private void BindBlocks()
         {
-            Container.BindInterfacesAndSelfTo<LevelDataProvider>().AsSingle();
-        }
-
-        private void BindControllers()
-        {
+            Container.BindInterfacesTo<LevelDataService>().AsSingle();
+            Container.BindInterfacesTo<BlocksProvider>().AsSingle();
             Container.Bind<Block>().AsTransient();
         }
 
@@ -69,7 +63,7 @@ namespace Code.Infrastructure.Installers
         {
             Container.BindInterfacesTo<MoveBlocksFacade>().AsSingle();
             Container.BindInterfacesTo<UndoMoveBlocksFacade>().AsSingle();
-            
+
             Container.BindInterfacesTo<MoveBlocksFeature>().AsSingle();
             Container.BindInterfacesTo<UndoMoveBlocksFeature>().AsSingle();
         }
@@ -86,7 +80,7 @@ namespace Code.Infrastructure.Installers
 
         private void BindGameStateMachine()
         {
-            Container.BindInterfacesTo<LevelStateRegistrar>().AsSingle().NonLazy();
+            Container.BindInterfacesTo<LevelStateRegistry>().AsSingle().NonLazy();
             Container.Bind<StateFactory>().AsSingle();
             Container.BindInterfacesAndSelfTo<ConstructLevelState>().AsSingle();
             Container.BindInterfacesAndSelfTo<GameplayState>().AsSingle();

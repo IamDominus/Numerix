@@ -1,10 +1,7 @@
-﻿using Code.Data;
-using Code.Gameplay.Providers;
+﻿using Code.Gameplay.Providers;
 using Code.Infrastructure.FSM;
 using Code.Providers.SaveLoad;
-using Code.Services;
 using Code.Services.Ad;
-using Code.Services.SaveLoad;
 using Code.Services.Spawn;
 using Code.Utils;
 using UnityEngine;
@@ -17,21 +14,20 @@ namespace Code.Infrastructure.GSM.States
         private readonly GameStateMachine _gameStateMachine;
         private readonly IAdService _adService;
         private readonly IDynamicBoundsProvider _dynamicBoundsProvider;
-        private readonly ILevelDataProvider _levelDataProvider;
+        private readonly ILevelDataService _levelDataService;
         private readonly IGameSaveProvider _gameSaveProvider;
 
         public ConstructLevelState(ISpawnService spawnService, GameStateMachine gameStateMachine, IAdService adService,
-            IDynamicBoundsProvider dynamicBoundsProvider, ILevelDataProvider levelDataProvider, IGameSaveProvider gameSaveProvider)
+            IDynamicBoundsProvider dynamicBoundsProvider, ILevelDataService levelDataService, IGameSaveProvider gameSaveProvider)
         {
             _spawnService = spawnService;
             _gameStateMachine = gameStateMachine;
             _adService = adService;
             _dynamicBoundsProvider = dynamicBoundsProvider;
-            _levelDataProvider = levelDataProvider;
+            _levelDataService = levelDataService;
             _gameSaveProvider = gameSaveProvider;
         }
 
-        //TODO separate start logic from load saved level logic 
         public void Enter()
         {
             _adService.CreateAndShowBanner();
@@ -40,25 +36,35 @@ namespace Code.Infrastructure.GSM.States
             _spawnService.SpawnCells();
 
             var levelData = _gameSaveProvider.Data.GetCurrentLevelSaveData();
-            if (levelData.IsEmpty() == false)
+
+            if (levelData.IsNotEmpty())
             {
-                var blockModels = _levelDataProvider.PeekPreviousTurnBlockModels();
-                foreach (var blockModel in blockModels)
-                {
-                    if (blockModel != null)
-                    {
-                        _spawnService.SpawnBlock(blockModel);
-                    }
-                }
+                SpawnBlocksFromSave();
             }
             else
             {
-                _spawnService.SpawnRandomBlock();
-                _levelDataProvider.SaveLevelState(Vector2Int.up);
+                SpawnRandomBlock();
             }
 
-
             _gameStateMachine.Enter<GameplayState>();
+        }
+
+        private void SpawnRandomBlock()
+        {
+            _spawnService.SpawnRandomBlock();
+            _levelDataService.PushTurn(Vector2Int.up);
+        }
+
+        private void SpawnBlocksFromSave()
+        {
+            var blockModels = _levelDataService.PeekPreviousTurnBlockModels();
+            foreach (var blockModel in blockModels)
+            {
+                if (blockModel != null)
+                {
+                    _spawnService.SpawnBlock(blockModel);
+                }
+            }
         }
 
         public void Exit()

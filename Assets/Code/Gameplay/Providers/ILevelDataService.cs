@@ -2,13 +2,13 @@
 
 namespace Code.Gameplay.Providers
 {
-    public interface ILevelDataProvider : IBlocksProvider
+    public interface ILevelDataService
     {
-        void AddBlock(Block block);
         int TurnHistoryCount();
         BlockModel[,] PopPreviousTurnBlockModels();
         BlockModel[,] PeekPreviousTurnBlockModels();
         Vector2Int PopPreviousTurnMoveDirection();
-        void SaveLevelState(Vector2Int moveDirection);
+        void PushTurn(Vector2Int moveDirection);
+        void Clear();
     }
 }

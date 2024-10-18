@@ -44,5 +44,10 @@ namespace Code.Utils
         {
             return data.BlockModels.Count == 0 || data.MoveDirections.Count == 0;
         }
+        
+        public static bool IsNotEmpty(this LevelSaveData data)
+        {
+            return IsEmpty(data) == false;
+        }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Code.Gameplay;
 using Code.Gameplay.Providers;
 using Code.Gameplay.Views;
@@ -16,19 +15,19 @@ namespace Code.Services.Spawn
     {
         private readonly Transform _parent;
         private readonly IDynamicBoundsProvider _dynamicBoundsProvider;
-        private readonly ILevelDataProvider _levelDataProvider;
         private readonly ISelectedLevelProvider _selectedLevelProvider;
+        private readonly IBlocksProvider _blocksProvider;
         private readonly IGameFactory _gameFactory;
         private readonly Random _random;
 
         public SpawnService(ILevelObjectsProvider levelObjectsProvider, IDynamicBoundsProvider dynamicBoundsProvider, IGameFactory gameFactory,
-            ILevelDataProvider levelDataProvider, ISelectedLevelProvider selectedLevelProvider)
+            ISelectedLevelProvider selectedLevelProvider, IBlocksProvider blocksProvider)
         {
             _parent = levelObjectsProvider.CellsParent;
             _dynamicBoundsProvider = dynamicBoundsProvider;
             _gameFactory = gameFactory;
-            _levelDataProvider = levelDataProvider;
             _selectedLevelProvider = selectedLevelProvider;
+            _blocksProvider = blocksProvider;
             _random = new Random();
         }
 
@@ -49,12 +48,12 @@ namespace Code.Services.Spawn
         {
             var wordPosition = _dynamicBoundsProvider.GetBlockInWorldPosition(blockModel.Position.x, blockModel.Position.y);
             var block = _gameFactory.CreateBlock(blockModel, wordPosition, _parent, _dynamicBoundsProvider.CellSize, blockModel.Value);
-            _levelDataProvider.AddBlock(block);
+            _blocksProvider.AddBlock(block);
         }
 
         public void SpawnRandomBlock()
         {
-            if (TryGetRandomPosition(_levelDataProvider.Blocks, out var position))
+            if (TryGetRandomPosition(_blocksProvider.Blocks, out var position))
             {
                 var value = _random.Next(0, 2) == 0 ? 2 : 4;
                 var blockModel = new BlockModel(value, position);
@@ -70,7 +69,7 @@ namespace Code.Services.Spawn
 
         public bool AbleToSpawnRandomBlock()
         {
-            return TryGetRandomPosition(_levelDataProvider.Blocks, out _);
+            return TryGetRandomPosition(_blocksProvider.Blocks, out _);
         }
 
         private bool TryGetRandomPosition<T>(T[,] array, out Vector2Int position)

@@ -1,5 +1,5 @@
 ﻿using Code.Infrastructure.FSM;
-using Code.Infrastructure.GSM.StateRegistrars;
+using Code.Infrastructure.GSM.StateRegistries;
 using Code.Infrastructure.GSM.States;
 using Code.Providers.GameObject;
 using Code.ViewControllers;
@@ -32,7 +32,7 @@ namespace Code.Infrastructure.Installers
 
         private void BindGameStateMachine()
         {
-            Container.BindInterfacesTo<MainMenuStateRegistrar>().AsSingle().NonLazy();
+            Container.BindInterfacesTo<MainMenuStateRegistry>().AsSingle().NonLazy();
             Container.Bind<StateFactory>().AsSingle();
             Container.BindInterfacesAndSelfTo<MainMenuState>().AsSingle();
         }

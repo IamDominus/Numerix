@@ -12,20 +12,20 @@ namespace Code.Gameplay.Facades
         private readonly IUndoMoveBlocksFeature _undoMoveBlocksFeature;
         private readonly ISaveLoadService _saveLoadService;
         private readonly IInputService _inputService;
-        private readonly ILevelDataProvider _levelDataProvider;
+        private readonly ILevelDataService _levelDataService;
 
         public UndoMoveBlocksFacade(IUndoMoveBlocksFeature undoMoveBlocksFeature, ISaveLoadService saveLoadService, IInputService inputService,
-            ILevelDataProvider levelDataProvider)
+            ILevelDataService levelDataService)
         {
             _undoMoveBlocksFeature = undoMoveBlocksFeature;
             _saveLoadService = saveLoadService;
             _inputService = inputService;
-            _levelDataProvider = levelDataProvider;
+            _levelDataService = levelDataService;
         }
 
         public async UniTask UndoMoveBlocks()
         {
-            if (_levelDataProvider.TurnHistoryCount() <= 0)
+            if (_levelDataService.TurnHistoryCount() <= 0)
                 return;
 
             _inputService.Disable();
