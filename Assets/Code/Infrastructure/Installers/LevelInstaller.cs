@@ -7,6 +7,7 @@ using Code.Infrastructure.FSM;
 using Code.Infrastructure.GSM.StateRegistries;
 using Code.Infrastructure.GSM.States;
 using Code.Providers.GameObject;
+using Code.Services.BuildLevel;
 using Code.Services.HUD;
 using Code.Services.Input;
 using Code.Services.Score;
@@ -38,6 +39,7 @@ namespace Code.Infrastructure.Installers
 
             Container.BindInterfacesTo<HUDSafeAreaService>().AsSingle();
             Container.BindInterfacesTo<ScoreService>().AsSingle();
+            Container.BindInterfacesTo<BuildLevelService>().AsSingle();
         }
 
         private void BindObjectsCreationServices()

@@ -123,6 +123,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &131844936 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 678231886702430978, guid: 09a7d0975ea43734687e73348aa3dcf3, type: 3}
+  m_PrefabInstance: {fileID: 3425782563270598083}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &150865944
 GameObject:
   m_ObjectHideFlags: 0
@@ -219,6 +230,17 @@ MonoBehaviour:
   _mainCamera: {fileID: 1721020993}
   _mainCanvas: {fileID: 288571570}
   _safeArea: {fileID: 559255777}
+--- !u!114 &241363392 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6420473136095771022, guid: 09a7d0975ea43734687e73348aa3dcf3, type: 3}
+  m_PrefabInstance: {fileID: 3425782563270598083}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &288571567
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,6 +429,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &553760695 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3425782564408097239, guid: 09a7d0975ea43734687e73348aa3dcf3, type: 3}
+  m_PrefabInstance: {fileID: 3425782563270598083}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &559255776
 GameObject:
   m_ObjectHideFlags: 0
@@ -5546,6 +5579,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1340142096 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5656674860768764613, guid: 09a7d0975ea43734687e73348aa3dcf3, type: 3}
+  m_PrefabInstance: {fileID: 3425782563270598083}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1658273825
 GameObject:
   m_ObjectHideFlags: 0
@@ -5635,6 +5679,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1658273825}
   m_CullTransparentMesh: 1
+--- !u!114 &1663851599 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5656674860303854800, guid: 09a7d0975ea43734687e73348aa3dcf3, type: 3}
+  m_PrefabInstance: {fileID: 3425782563270598083}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1709151825
 GameObject:
   m_ObjectHideFlags: 0
@@ -10876,7 +10931,32 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 7710370276817745592, guid: 09a7d0975ea43734687e73348aa3dcf3, type: 3}
+      propertyPath: _homeButton
+      value: 
+      objectReference: {fileID: 1340142096}
+    - target: {fileID: 7710370276817745592, guid: 09a7d0975ea43734687e73348aa3dcf3, type: 3}
+      propertyPath: _undoButton
+      value: 
+      objectReference: {fileID: 553760695}
+    - target: {fileID: 7710370276817745592, guid: 09a7d0975ea43734687e73348aa3dcf3, type: 3}
+      propertyPath: _currentScore
+      value: 
+      objectReference: {fileID: 131844936}
+    - target: {fileID: 7710370276817745592, guid: 09a7d0975ea43734687e73348aa3dcf3, type: 3}
+      propertyPath: _maxScoreText
+      value: 
+      objectReference: {fileID: 241363392}
+    - target: {fileID: 7710370276817745592, guid: 09a7d0975ea43734687e73348aa3dcf3, type: 3}
+      propertyPath: _restartButton
+      value: 
+      objectReference: {fileID: 1663851599}
+    m_RemovedComponents:
+    - {fileID: 764187172933324049, guid: 09a7d0975ea43734687e73348aa3dcf3, type: 3}
+    - {fileID: 3425782564408097236, guid: 09a7d0975ea43734687e73348aa3dcf3, type: 3}
+    - {fileID: 6829917110554866158, guid: 09a7d0975ea43734687e73348aa3dcf3, type: 3}
+    - {fileID: 7286382149725561489, guid: 09a7d0975ea43734687e73348aa3dcf3, type: 3}
+    - {fileID: 3425782563899343308, guid: 09a7d0975ea43734687e73348aa3dcf3, type: 3}
     m_AddedGameObjects: []
   m_SourcePrefab: {fileID: 100100000, guid: 09a7d0975ea43734687e73348aa3dcf3, type: 3}
 --- !u!1001 &3588574783650948222
