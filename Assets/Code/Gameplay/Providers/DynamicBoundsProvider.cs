@@ -38,7 +38,7 @@ namespace Code.Gameplay.Providers
 
         public void Initialize()
         {
-            _hudRect = ((RectTransform)Resources.Load<HUDView>("HUD").transform).rect;
+            _hudRect = ((RectTransform)Resources.Load<HUDView>("UI/HUD/HUD").transform).rect;
             _fieldSize = CalculateFieldSize();
             _fieldPosition = CalculateFieldPosition();
             _cellSize = CalculateCellSize();

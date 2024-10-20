@@ -6,7 +6,7 @@ namespace Code.Infrastructure.Factories
 {
     public class UIFactory : IUIFactory, IInitializable
     {
-        private const string MAIN_MENU_PREFAB_PATH = "Prefabs/Menu/MainMenu";
+        private const string MAIN_MENU_PREFAB_PATH = "UI/MenuMenu/MainMenu";
 
         private readonly DiContainer _diContainer;
         
