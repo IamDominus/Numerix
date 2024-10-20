@@ -7,6 +7,6 @@ namespace Code.Providers.GameObject
         Transform CellsParent { get; }
         Camera MainCamera { get; }
         Canvas MainCanvas { get; }
-        RectTransform SafeArea { get; }
+        RectTransform HUDParent { get; }
     }
 }

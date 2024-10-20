@@ -8,10 +8,11 @@ using Code.Infrastructure.GSM.StateRegistries;
 using Code.Infrastructure.GSM.States;
 using Code.Providers.GameObject;
 using Code.Services.BuildLevel;
-using Code.Services.HUD;
 using Code.Services.Input;
 using Code.Services.Score;
 using Code.Services.Spawn;
+using Code.ViewControllers;
+using Code.ViewControllers.HUD;
 using Zenject;
 
 namespace Code.Infrastructure.Installers
@@ -37,9 +38,12 @@ namespace Code.Infrastructure.Installers
 
             BindGameStateMachine();
 
-            Container.BindInterfacesTo<HUDSafeAreaService>().AsSingle();
             Container.BindInterfacesTo<ScoreService>().AsSingle();
             Container.BindInterfacesTo<BuildLevelService>().AsSingle();
+            Container.BindInterfacesTo<HUDViewController>().AsSingle();
+            
+            Container.BindInterfacesTo<UIFactory>().AsSingle();
+
         }
 
         private void BindObjectsCreationServices()

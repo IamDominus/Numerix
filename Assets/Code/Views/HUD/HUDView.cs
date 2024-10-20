@@ -1,12 +1,12 @@
 ﻿using Code.Enums;
-using Code.Providers.SaveLoad;
-using Code.Services.Score;
-using Code.Utils;
+using Code.Gameplay.Facades;
 using Code.Infrastructure.GSM;
 using Code.Infrastructure.GSM.Payloads;
 using Code.Infrastructure.GSM.States;
+using Code.Providers.SaveLoad;
 using Code.Services.Input;
-using Code.Gameplay.Facades;
+using Code.Services.Score;
+using Code.Utils;
 using Cysharp.Threading.Tasks;
 using TMPro;
 using UnityEngine;
@@ -52,6 +52,16 @@ namespace Code.Views.HUD
             _undoButton.onClick.AddListener(OnUndoButtonClicked);
 
             _inputService.OnEnabledChanged += OnInputEnabledChanged;
+        }
+
+        public void Show()
+        {
+            gameObject.SetActive(true);
+        }
+
+        public void Hide()
+        {
+            gameObject.SetActive(false);
         }
 
         private void InitializeScores()

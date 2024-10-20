@@ -2,7 +2,7 @@
 using Code.Infrastructure.Factories;
 using Code.Providers.GameObject;
 using Code.ViewEntities;
-using Code.Views;
+using Code.Views.MainMenu;
 
 namespace Code.ViewControllers
 {

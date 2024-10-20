@@ -7,7 +7,7 @@ namespace Code.Providers.GameObject
         public Transform CellsParent => _cellsParent;
         public Camera MainCamera => _mainCamera;
         public Canvas MainCanvas => _mainCanvas;
-        public RectTransform SafeArea => _safeArea;
+        public RectTransform HUDParent => _safeArea;
 
         [SerializeField] private Transform _cellsParent;
         [SerializeField] private Camera _mainCamera;

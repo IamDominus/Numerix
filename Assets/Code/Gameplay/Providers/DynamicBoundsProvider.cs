@@ -1,17 +1,17 @@
 ﻿using Code.Providers;
 using Code.Providers.GameObject;
-using Code.Services;
 using Code.Services.Ad;
-using Code.Services.HUD;
-using Code.Views;
-using Code.Views.HUD;
+using Code.ViewControllers;
+using Code.ViewControllers.HUD;
 using UnityEngine;
 
 namespace Code.Gameplay.Providers
 {
     public class DynamicBoundsProvider : IDynamicBoundsProvider
     {
-        private const float BOT_PADDING = 50f;
+        private const float BOT_EXTRA_PADDING = 50f;
+        private const float WIDTH_OFFSET = 60f;
+        private const float CELL_SIZE_OFFSET = 0.15f;
 
         public Vector2 FieldSize => _fieldSize;
         public Vector2 FieldPosition => _fieldPosition;
@@ -19,34 +19,29 @@ namespace Code.Gameplay.Providers
 
         private readonly ILevelObjectsProvider _objectsProvider;
         private readonly IAdService _adService;
-        private readonly IHUDSafeAreaService _hudSafeAreaService;
         private readonly ISelectedLevelProvider _selectedLevelProvider;
+        private readonly IHUDViewController _hudViewController;
 
         private Vector2 _fieldSize;
         private Vector2 _fieldPosition;
         private Vector2 _cellSize;
-        private Rect _hudRect;
 
-        public DynamicBoundsProvider(ILevelObjectsProvider objectsProvider, IAdService adService, IHUDSafeAreaService hudSafeAreaService,
-            ISelectedLevelProvider selectedLevelProvider)
+        public DynamicBoundsProvider(ILevelObjectsProvider objectsProvider, IAdService adService, ISelectedLevelProvider selectedLevelProvider,
+            IHUDViewController hudViewController)
         {
             _objectsProvider = objectsProvider;
             _adService = adService;
-            _hudSafeAreaService = hudSafeAreaService;
             _selectedLevelProvider = selectedLevelProvider;
+            _hudViewController = hudViewController;
         }
 
         public void Initialize()
         {
-            _hudRect = ((RectTransform)Resources.Load<HUDView>("UI/HUD/HUD").transform).rect;
             _fieldSize = CalculateFieldSize();
             _fieldPosition = CalculateFieldPosition();
             _cellSize = CalculateCellSize();
 
-            var fieldTop = _fieldPosition.y + _fieldSize.y / 2;
-            var fieldTopInPixels = fieldTop * CalculateScreenRatio();
-            var safeAreaMinAnchor = (Screen.height / 2f + fieldTopInPixels) / Screen.height;
-            _hudSafeAreaService.SetSafeAreaMinAnchor(new Vector2(0, safeAreaMinAnchor));
+            UpdateHUDAnchor();
         }
 
         public Vector2 GetBlockInWorldPosition(int x, int y)
@@ -90,24 +85,23 @@ namespace Code.Gameplay.Providers
 
         private Vector2 CalculateFieldPosition()
         {
-            var ratio = CalculateScreenRatio();
-            var topPadding = _hudRect.height * _objectsProvider.MainCanvas.scaleFactor + _hudSafeAreaService.SafeAreaTopPadding();
-            var botPadding = CalculateBannerHeight();
-            var paddingDifference = botPadding - topPadding;
+            var screenRatio = CalculateScreenRatio();
+            var topOffset = _hudViewController.HUDBottomPoint();
+            var botOffset = CalculateBannerHeight();
+            var offsetDiff = botOffset - topOffset;
 
-            var fieldCenter = paddingDifference / ratio / 2f;
+            var fieldCenter = offsetDiff / screenRatio / 2f;
             return new Vector2(0, fieldCenter);
         }
 
         private Vector2 CalculateFieldScale()
         {
-            var ratio = CalculateScreenRatio();
-            var topPadding = _hudRect.height * _objectsProvider.MainCanvas.scaleFactor + _hudSafeAreaService.SafeAreaTopPadding();
-            var botPadding = CalculateBannerHeight();
+            var screenRatio = CalculateScreenRatio();
+            var topOffset = _hudViewController.HUDBottomPoint();
+            var botOffset = CalculateBannerHeight();
 
-            var fieldHeight = (Screen.height - topPadding - botPadding) / ratio;
-            const float widthPadding = 60f;
-            var fieldWidth = (Screen.width - widthPadding) / ratio;
+            var fieldHeight = (Screen.height - topOffset - botOffset) / screenRatio;
+            var fieldWidth = (Screen.width - WIDTH_OFFSET) / screenRatio;
 
             return new Vector2(fieldWidth, fieldHeight);
         }
@@ -122,16 +116,24 @@ namespace Code.Gameplay.Providers
             var bannerHeight = _adService.GetBannerHeightInPixels();
             var screenDensity = Screen.dpi / 160f;
 
-            return bannerHeight * screenDensity + BOT_PADDING;
+            return bannerHeight * screenDensity + BOT_EXTRA_PADDING;
         }
 
         private Vector2 CalculateCellSize()
         {
             var minDimension = Mathf.Min(_selectedLevelProvider.Level.Value.x, _selectedLevelProvider.Level.Value.y);
             var minFieldSize = Mathf.Min(FieldSize.x, FieldSize.y);
-            var size = minFieldSize / minDimension;
-            size -= 0.15f;
+            var size = minFieldSize / minDimension - CELL_SIZE_OFFSET;
+
             return new Vector2(size, size);
+        }
+
+        private void UpdateHUDAnchor()
+        {
+            var fieldTop = _fieldPosition.y + _fieldSize.y / 2;
+            var fieldTopInPixels = fieldTop * CalculateScreenRatio();
+            var safeAreaMinAnchor = (Screen.height / 2f + fieldTopInPixels) / Screen.height;
+            _hudViewController.UpdateMinAnchor(new Vector2(0, safeAreaMinAnchor));
         }
     }
 }

@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace Code.Views
+namespace Code.Views.MainMenu
 {
     public class MainMenuView : MonoBehaviour
     {
