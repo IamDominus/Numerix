@@ -21,6 +21,7 @@ namespace Code.Infrastructure.GSM.StateRegistries
             _gameStateMachine.RegisterState(_stateFactory.Create<ConstructLevelState>());
             _gameStateMachine.RegisterState(_stateFactory.Create<GameplayState>());
             _gameStateMachine.RegisterState(_stateFactory.Create<RestartLevelState>());
+            _gameStateMachine.RegisterState(_stateFactory.Create<GameOverState>());
         }
 
         public void Dispose()
@@ -28,6 +29,7 @@ namespace Code.Infrastructure.GSM.StateRegistries
             _gameStateMachine.UnregisterState<ConstructLevelState>();
             _gameStateMachine.UnregisterState<GameplayState>();
             _gameStateMachine.UnregisterState<RestartLevelState>();
+            _gameStateMachine.UnregisterState<GameOverState>();
         }
     }
 }

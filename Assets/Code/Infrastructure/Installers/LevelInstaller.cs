@@ -7,6 +7,8 @@ using Code.Infrastructure.FSM;
 using Code.Infrastructure.GSM.StateRegistries;
 using Code.Infrastructure.GSM.States;
 using Code.Providers.GameObject;
+using Code.Services.BackButton;
+using Code.Services.BackButton.Workers;
 using Code.Services.BuildLevel;
 using Code.Services.Input;
 using Code.Services.Score;
@@ -38,18 +40,28 @@ namespace Code.Infrastructure.Installers
 
             BindGameStateMachine();
 
-            Container.BindInterfacesTo<ScoreService>().AsSingle();
-            Container.BindInterfacesTo<BuildLevelService>().AsSingle();
-            Container.BindInterfacesTo<HUDViewController>().AsSingle();
-            
-            Container.BindInterfacesTo<UIFactory>().AsSingle();
+            BindUI();
 
+            BindBackButton();
+        }
+
+        private void BindBackButton()
+        {
+            Container.BindInterfacesAndSelfTo<GameplayBackButtonWorker>().AsSingle();
+        }
+
+        private void BindUI()
+        {
+            Container.BindInterfacesTo<HUDViewController>().AsSingle();
+            Container.BindInterfacesAndSelfTo<GameOverViewController>().AsSingle();
+            Container.BindInterfacesTo<UIFactory>().AsSingle();
         }
 
         private void BindObjectsCreationServices()
         {
             Container.BindInterfacesTo<SpawnService>().AsSingle();
             Container.BindInterfacesTo<GameFactory>().AsSingle();
+            Container.BindInterfacesTo<BuildLevelService>().AsSingle();
         }
 
         private void BindBlocks()
@@ -72,6 +84,8 @@ namespace Code.Infrastructure.Installers
 
             Container.BindInterfacesTo<MoveBlocksFeature>().AsSingle();
             Container.BindInterfacesTo<UndoMoveBlocksFeature>().AsSingle();
+
+            Container.BindInterfacesTo<ScoreService>().AsSingle();
         }
 
         private void BindInput()
@@ -91,6 +105,7 @@ namespace Code.Infrastructure.Installers
             Container.BindInterfacesAndSelfTo<ConstructLevelState>().AsSingle();
             Container.BindInterfacesAndSelfTo<GameplayState>().AsSingle();
             Container.BindInterfacesAndSelfTo<RestartLevelState>().AsSingle();
+            Container.BindInterfacesAndSelfTo<GameOverState>().AsSingle();
         }
     }
 }

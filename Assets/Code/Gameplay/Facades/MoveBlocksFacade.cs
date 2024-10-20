@@ -1,6 +1,8 @@
 ﻿using System;
 using Code.Enums;
 using Code.Gameplay.Providers;
+using Code.Infrastructure.GSM;
+using Code.Infrastructure.GSM.States;
 using Code.Services;
 using Code.Services.Input;
 using Code.Services.SaveLoad;
@@ -22,9 +24,11 @@ namespace Code.Gameplay.Facades
         private readonly ITurnDataService _turnDataService;
         private readonly ISaveLoadService _saveLoadService;
         private readonly IScoreService _scoreService;
+        private readonly GameStateMachine _gameStateMachine;
 
         public MoveBlocksFacade(IInputService inputService, ISpawnService spawnService, Features.IMoveBlocksFeature moveBlocksFeature,
-            IBlocksValidationService blocksValidationService, ITurnDataService turnDataService, ISaveLoadService saveLoadService, IScoreService scoreService)
+            IBlocksValidationService blocksValidationService, ITurnDataService turnDataService, ISaveLoadService saveLoadService, IScoreService scoreService,
+            GameStateMachine gameStateMachine)
         {
             _inputService = inputService;
             _spawnService = spawnService;
@@ -33,6 +37,7 @@ namespace Code.Gameplay.Facades
             _turnDataService = turnDataService;
             _saveLoadService = saveLoadService;
             _scoreService = scoreService;
+            _gameStateMachine = gameStateMachine;
         }
 
         public void Initialize()
@@ -53,25 +58,18 @@ namespace Code.Gameplay.Facades
         {
             _inputService.Disable();
             _moveBlocksFeature.MoveBlocks(moveDirection);
+
             await UniTask.WaitForSeconds(Constants.DELAY_BEFORE_SPAWN_SEC);
 
-            if (_spawnService.AbleToSpawnRandomBlock())
-            {
-                _spawnService.SpawnRandomBlock();
-                _scoreService.UpdateScore();
-                _turnDataService.PushTurn(moveDirection);
-                _inputService.Enable();
-            }
+            _spawnService.SpawnRandomBlock();
+            _scoreService.UpdateScore();
+            _turnDataService.PushTurn(moveDirection);
+            _saveLoadService.SaveGameData();
+            _inputService.Enable();
 
             if (_blocksValidationService.AbleToMoveBlocks() == false)
             {
-                //TODO move state in state machine(delete save)
-                //delete save
-                Debug.Log("GAME IS OVER");
-            }
-            else
-            {
-                _saveLoadService.SaveGameData();
+                _gameStateMachine.Enter<GameOverState>();
             }
         }
 

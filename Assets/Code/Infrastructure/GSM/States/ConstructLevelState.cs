@@ -1,4 +1,5 @@
-﻿using Code.Gameplay.Providers;
+﻿using Code.Gameplay;
+using Code.Gameplay.Providers;
 using Code.Infrastructure.FSM;
 using Code.Services.Ad;
 using Code.Services.BuildLevel;
@@ -15,9 +16,10 @@ namespace Code.Infrastructure.GSM.States
         private readonly IScoreService _scoreService;
         private readonly IBuildLevelService _buildLevelService;
         private readonly IHUDViewController _hudViewController;
+        private readonly IBlocksValidationService _blocksValidationService;
 
         public ConstructLevelState(GameStateMachine gameStateMachine, IDynamicBoundsProvider dynamicBoundsProvider, IAdService adService, IScoreService scoreService,
-            IBuildLevelService buildLevelService, IHUDViewController hudViewController)
+            IBuildLevelService buildLevelService, IHUDViewController hudViewController, IBlocksValidationService blocksValidationService)
         {
             _gameStateMachine = gameStateMachine;
             _dynamicBoundsProvider = dynamicBoundsProvider;
@@ -25,6 +27,7 @@ namespace Code.Infrastructure.GSM.States
             _scoreService = scoreService;
             _buildLevelService = buildLevelService;
             _hudViewController = hudViewController;
+            _blocksValidationService = blocksValidationService;
         }
 
         public void Enter()
@@ -37,7 +40,14 @@ namespace Code.Infrastructure.GSM.States
             _buildLevelService.Build();
             _scoreService.UpdateScore();
 
-            _gameStateMachine.Enter<GameplayState>();
+            if (_blocksValidationService.AbleToMoveBlocks())
+            {
+                _gameStateMachine.Enter<GameplayState>();
+            }
+            else
+            {
+                _gameStateMachine.Enter<GameOverState>();
+            }
         }
 
 
