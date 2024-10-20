@@ -8,5 +8,6 @@
         void ShowBanner();
         void HideBanner();
         void DestroyBanner();
+        void CreateBanner();
     }
 }

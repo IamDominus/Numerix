@@ -17,14 +17,14 @@ namespace Code.Infrastructure.GSM.States
 
         public void Enter()
         {
-            _adService.CreateAndShowBanner();
+            _adService.ShowBanner();
             _inputService.Enable();
         }
 
         public void Exit()
         {
             _inputService.Disable();
-            _adService.DestroyBanner();
+            _adService.HideBanner();
         }
     }
 }

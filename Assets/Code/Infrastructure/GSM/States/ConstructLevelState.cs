@@ -1,6 +1,7 @@
 ﻿using Code.Gameplay.Providers;
 using Code.Infrastructure.FSM;
 using Code.Providers.SaveLoad;
+using Code.Services.Ad;
 using Code.Services.Spawn;
 using Code.Utils;
 using UnityEngine;
@@ -14,19 +15,22 @@ namespace Code.Infrastructure.GSM.States
         private readonly IDynamicBoundsProvider _dynamicBoundsProvider;
         private readonly ITurnDataService _turnDataService;
         private readonly IGameSaveProvider _gameSaveProvider;
+        private readonly IAdService _adService;
 
         public ConstructLevelState(ISpawnService spawnService, GameStateMachine gameStateMachine, IDynamicBoundsProvider dynamicBoundsProvider,
-            ITurnDataService turnDataService, IGameSaveProvider gameSaveProvider)
+            ITurnDataService turnDataService, IGameSaveProvider gameSaveProvider, IAdService adService)
         {
             _spawnService = spawnService;
             _gameStateMachine = gameStateMachine;
             _dynamicBoundsProvider = dynamicBoundsProvider;
             _turnDataService = turnDataService;
             _gameSaveProvider = gameSaveProvider;
+            _adService = adService;
         }
 
         public void Enter()
         {
+            _adService.CreateBanner();
             _dynamicBoundsProvider.Initialize();
             _spawnService.SpawnCells();
             InitializeBlocks();

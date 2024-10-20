@@ -34,6 +34,12 @@ namespace Code.Services.Ad
             return 0;
         }
 
+        public void CreateBanner()
+        {
+            _bannerView?.Destroy();
+            _bannerView = new BannerView(_adUnitId, BANNER_SIZE, AdPosition.Bottom);
+        }
+        
         public void CreateAndShowBanner()
         {
             _bannerView?.Destroy();
