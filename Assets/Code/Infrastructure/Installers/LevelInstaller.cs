@@ -1,4 +1,5 @@
-﻿using Code.Gameplay;
+﻿using System;
+using Code.Gameplay;
 using Code.Gameplay.Facades;
 using Code.Gameplay.Features;
 using Code.Gameplay.Providers;
@@ -6,6 +7,7 @@ using Code.Infrastructure.Factories;
 using Code.Infrastructure.FSM;
 using Code.Infrastructure.GSM.StateRegistries;
 using Code.Infrastructure.GSM.States;
+using Code.Providers;
 using Code.Providers.GameObject;
 using Code.Services.BackButton;
 using Code.Services.BackButton.Workers;
@@ -43,6 +45,13 @@ namespace Code.Infrastructure.Installers
             BindUI();
 
             BindBackButton();
+
+            BindRandom();
+        }
+
+        private void BindRandom()
+        {
+            Container.Bind<Random>().AsSingle();
         }
 
         private void BindBackButton()
@@ -75,6 +84,8 @@ namespace Code.Infrastructure.Installers
         {
             Container.BindInterfacesAndSelfTo<DynamicBoundsProvider>().AsSingle();
             Container.BindInterfacesTo<BlocksValidationService>().AsSingle();
+            Container.BindInterfacesTo<RandomBlockValueProvider>().AsSingle();
+
         }
 
         private void BindGameplayFeatures()

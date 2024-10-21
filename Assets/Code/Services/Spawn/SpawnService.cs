@@ -4,7 +4,6 @@ using Code.Gameplay.Providers;
 using Code.Gameplay.Views;
 using Code.Infrastructure.Factories;
 using Code.Providers;
-using Code.Providers.GameObject;
 using Code.Utils;
 using UnityEngine;
 using Random = System.Random;
@@ -13,33 +12,31 @@ namespace Code.Services.Spawn
 {
     public class SpawnService : ISpawnService
     {
-        private readonly Transform _parent;
         private readonly IDynamicBoundsProvider _dynamicBoundsProvider;
-        private readonly ISelectedLevelProvider _selectedLevelProvider;
         private readonly IBlocksProvider _blocksProvider;
         private readonly IGameFactory _gameFactory;
         private readonly Random _random;
+        private readonly IRandomBlockValueProvider _blockValueProvider;
 
-        public SpawnService(ILevelObjectsProvider levelObjectsProvider, IDynamicBoundsProvider dynamicBoundsProvider, IGameFactory gameFactory,
-            ISelectedLevelProvider selectedLevelProvider, IBlocksProvider blocksProvider)
+        public SpawnService(IDynamicBoundsProvider dynamicBoundsProvider, IGameFactory gameFactory, IBlocksProvider blocksProvider, Random random,
+            IRandomBlockValueProvider blockValueProvider)
         {
-            _parent = levelObjectsProvider.CellsParent;
             _dynamicBoundsProvider = dynamicBoundsProvider;
             _gameFactory = gameFactory;
-            _selectedLevelProvider = selectedLevelProvider;
             _blocksProvider = blocksProvider;
-            _random = new Random();
+            _random = random;
+            _blockValueProvider = blockValueProvider;
         }
 
         public void SpawnCells()
         {
-            for (var x = 0; x < _selectedLevelProvider.Level.Value.x; x++)
+            for (var x = 0; x < _blocksProvider.Blocks.GetLength(0); x++)
             {
-                for (var y = 0; y < _selectedLevelProvider.Level.Value.y; y++)
+                for (var y = 0; y < _blocksProvider.Blocks.GetLength(1); y++)
                 {
                     var position = _dynamicBoundsProvider.GetBlockInWorldPosition(x, y);
                     var size = _dynamicBoundsProvider.CellSize;
-                    _gameFactory.CreateCell(position, _parent, size);
+                    _gameFactory.CreateCell(position, size);
                 }
             }
         }
@@ -47,7 +44,7 @@ namespace Code.Services.Spawn
         public void SpawnBlock(BlockModel blockModel)
         {
             var wordPosition = _dynamicBoundsProvider.GetBlockInWorldPosition(blockModel.Position.x, blockModel.Position.y);
-            var block = _gameFactory.CreateBlock(blockModel, wordPosition, _parent, _dynamicBoundsProvider.CellSize, blockModel.Value);
+            var block = _gameFactory.CreateBlock(blockModel, wordPosition, _dynamicBoundsProvider.CellSize, blockModel.Value);
             _blocksProvider.AddBlock(block);
         }
 
@@ -55,7 +52,7 @@ namespace Code.Services.Spawn
         {
             if (TryGetRandomPosition(_blocksProvider.Blocks, out var position))
             {
-                var value = _random.Next(0, 2) == 0 ? 2 : 4;
+                var value = _blockValueProvider.GetRandomValue();
                 var blockModel = new BlockModel(value, position);
                 SpawnBlock(blockModel);
             }
@@ -64,7 +61,7 @@ namespace Code.Services.Spawn
         public BlockView SpawnBlockView(BlockModel blockModel)
         {
             var wordPosition = _dynamicBoundsProvider.GetBlockInWorldPosition(blockModel.Position.x, blockModel.Position.y);
-            return _gameFactory.CreateBlockView(wordPosition, _parent, _dynamicBoundsProvider.CellSize, blockModel.Value);
+            return _gameFactory.CreateBlockView(wordPosition, _dynamicBoundsProvider.CellSize, blockModel.Value);
         }
 
         public bool AbleToSpawnRandomBlock()

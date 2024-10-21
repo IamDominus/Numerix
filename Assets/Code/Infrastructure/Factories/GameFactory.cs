@@ -2,6 +2,7 @@
 using System.Linq;
 using Code.Gameplay;
 using Code.Gameplay.Views;
+using Code.Providers.GameObject;
 using UnityEngine;
 using Zenject;
 
@@ -12,13 +13,16 @@ namespace Code.Infrastructure.Factories
         private const string CELL_PREFAB_PATH = "Prefabs/FieldAndCell/Cell";
         private const string BLOCKS_FOLDER_PREFAB_PATH = "Prefabs/Blocks";
 
-        private readonly DiContainer _diContainer;
+        private readonly IInstantiator _instantiator;
+        private readonly Transform _parent;
+
         private Cell _cellPrefab;
         private Dictionary<double, BlockView> _blockViews;
 
-        public GameFactory(DiContainer diContainer)
+        public GameFactory(IInstantiator instantiator, ILevelObjectsProvider levelObjectsProvider)
         {
-            _diContainer = diContainer;
+            _instantiator = instantiator;
+            _parent = levelObjectsProvider.CellsParent;
         }
 
         public void Initialize()
@@ -27,23 +31,23 @@ namespace Code.Infrastructure.Factories
             _blockViews = Resources.LoadAll<BlockView>(BLOCKS_FOLDER_PREFAB_PATH).ToDictionary(x => x.Value, x => x);
         }
 
-        public void CreateCell(Vector3 position, Transform parent, Vector2 size)
+        public void CreateCell(Vector3 position, Vector2 size)
         {
-            var go = _diContainer.InstantiatePrefab(_cellPrefab, position, Quaternion.identity, parent);
+            var go = _instantiator.InstantiatePrefab(_cellPrefab, position, Quaternion.identity, _parent);
             go.transform.localScale = size;
         }
 
-        public BlockView CreateBlockView(Vector2 position, Transform parent, Vector2 size, double value)
+        public BlockView CreateBlockView(Vector2 position, Vector2 size, double value)
         {
-            var blockView = _diContainer.InstantiatePrefabForComponent<BlockView>(_blockViews[value], position, Quaternion.identity, parent);
+            var blockView = _instantiator.InstantiatePrefabForComponent<BlockView>(_blockViews[value], position, Quaternion.identity, _parent);
             blockView.transform.localScale = size;
             return blockView;
         }
 
-        public Block CreateBlock(BlockModel blockModel, Vector2 position, Transform parent, Vector2 size, double value)
+        public Block CreateBlock(BlockModel blockModel, Vector2 position, Vector2 size, double value)
         {
-            var blockView = CreateBlockView(position, parent, size, value);
-            var block = _diContainer.Instantiate<Block>();
+            var blockView = CreateBlockView(position, size, value);
+            var block = _instantiator.Instantiate<Block>();
             block.Initialize(blockModel, blockView);
             return block;
         }

@@ -4,17 +4,16 @@ namespace Code.Infrastructure.FSM
 {
     public class StateFactory
     {
-        private readonly DiContainer _diContainer;
+        private readonly IInstantiator _instantiator;
 
-        public StateFactory(DiContainer diContainer)
+        public StateFactory(IInstantiator instantiator)
         {
-            _diContainer = diContainer;
+            _instantiator = instantiator;
         }
 
-        //TODO investigate .Instantiate instead of .Resolve
         public TState Create<TState>() where TState : IExitableState
         {
-            return _diContainer.Resolve<TState>();
+            return _instantiator.Instantiate<TState>();
         }
     }
 }
