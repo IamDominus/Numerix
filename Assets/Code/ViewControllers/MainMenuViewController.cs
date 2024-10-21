@@ -21,7 +21,7 @@ namespace Code.ViewControllers
 
         private MainMenuView _mainMenuView;
 
-        public MainMenuViewController(IUIFactory uiFactory, IMainMenuObjectsProvider objectsProvider, GameStateMachine gameStateMachine, EventBus eventBus)
+        public MainMenuViewController(IUIFactory uiFactory, IMainMenuObjectsProvider objectsProvider, GameStateMachine gameStateMachine, IEventBus eventBus)
         {
             _uiFactory = uiFactory;
             _objectsProvider = objectsProvider;
