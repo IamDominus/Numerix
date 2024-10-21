@@ -10,15 +10,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1968827286691173857, guid: f8d481f14af6d6943910abf93bf6788d, type: 3}
       propertyPath: m_Color.b
-      value: 0.9764706
+      value: 0.12156863
       objectReference: {fileID: 0}
     - target: {fileID: 1968827286691173857, guid: f8d481f14af6d6943910abf93bf6788d, type: 3}
       propertyPath: m_Color.g
-      value: 0.7058824
+      value: 0.7607843
       objectReference: {fileID: 0}
     - target: {fileID: 1968827286691173857, guid: f8d481f14af6d6943910abf93bf6788d, type: 3}
       propertyPath: m_Color.r
-      value: 0.43529412
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5019873445021185889, guid: f8d481f14af6d6943910abf93bf6788d, type: 3}
       propertyPath: m_RootOrder
@@ -70,19 +70,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6043167921378558686, guid: f8d481f14af6d6943910abf93bf6788d, type: 3}
       propertyPath: m_Color.g
-      value: 0.4862745
+      value: 0.27058825
       objectReference: {fileID: 0}
     - target: {fileID: 6043167921378558686, guid: f8d481f14af6d6943910abf93bf6788d, type: 3}
       propertyPath: m_Color.r
-      value: 0.92156863
+      value: 0.52156866
       objectReference: {fileID: 0}
     - target: {fileID: 6154371584124940859, guid: f8d481f14af6d6943910abf93bf6788d, type: 3}
       propertyPath: m_Name
-      value: 1024
+      value: 16777216
       objectReference: {fileID: 0}
     - target: {fileID: 7228311735987204234, guid: f8d481f14af6d6943910abf93bf6788d, type: 3}
       propertyPath: Value
-      value: 1024
+      value: 16777216
+      objectReference: {fileID: 0}
+    - target: {fileID: 9019056825485488171, guid: f8d481f14af6d6943910abf93bf6788d, type: 3}
+      propertyPath: m_text
+      value: 16384
+      objectReference: {fileID: 0}
+    - target: {fileID: 9019056825485488171, guid: f8d481f14af6d6943910abf93bf6788d, type: 3}
+      propertyPath: m_fontSize
+      value: 4.15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []

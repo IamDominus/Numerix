@@ -1,4 +1,6 @@
-﻿using Code.Gameplay.Providers;
+﻿using System.Linq;
+using Code.Gameplay;
+using Code.Gameplay.Providers;
 using Code.Providers.SaveLoad;
 using Code.Services.Spawn;
 using Code.Utils;
@@ -24,6 +26,20 @@ namespace Code.Services.BuildLevel
             _spawnService.SpawnCells();
 
             var levelData = _gameSaveProvider.Data.GetCurrentLevelSaveData();
+            var asd = levelData.BlockModels.Last();
+            double val = 2;
+
+            for (int x = 0; x < asd.GetLength(0); x++)
+            {
+                for (int y = 0; y < asd.GetLength(1); y++)
+                {
+                    asd[x, y] = new BlockModel(val, new Vector2Int(x, y));
+                    if (val < 16777216)
+                    {
+                        val *= 2;
+                    }
+                }
+            }
 
             if (levelData.IsNotEmpty())
             {

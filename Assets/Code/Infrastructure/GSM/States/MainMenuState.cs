@@ -40,10 +40,10 @@ namespace Code.Infrastructure.GSM.States
 
         public void Exit()
         {
+            _backButtonService.PopWorker();
             _adService.DestroyBanner();
             _eventBus.Unsubscribe<PlayButtonClicked>(OnPlayButtonClicked);
             _mainMenuViewController.Hide();
-            _backButtonService.PopWorker();
         }
 
         private void OnPlayButtonClicked()
