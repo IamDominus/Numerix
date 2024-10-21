@@ -6,7 +6,6 @@ using Code.Infrastructure.GSM.States;
 using Code.Infrastructure.Runners;
 using Code.Providers;
 using Code.Providers.SaveLoad;
-using Code.Services;
 using Code.Services.Ad;
 using Code.Services.BackButton;
 using Code.Services.BackButton.Workers;
@@ -21,20 +20,55 @@ namespace Code.Infrastructure.Installers
         public override void InstallBindings()
         {
             BindCoroutineRunner();
-            
-            Container.BindInterfacesTo<AdService>().AsSingle().NonLazy();
-            Container.Bind<SceneLoader>().AsSingle();
-            Container.BindInterfacesTo<StaticDataProvider>().AsSingle();
-            Container.BindInterfacesTo<EventBus>().AsSingle();
-            Container.BindInterfacesTo<UIFactory>().AsSingle();
-            Container.BindInterfacesTo<BackButtonService>().AsSingle();
-            Container.BindInterfacesAndSelfTo<MainMenuBackButtonWorker>().AsSingle();
-            
+
+            BindAd();
+
+            BindSceneLoader();
+
+            BindStaticData();
+
+            BindEvents();
+
+            BindUI();
+
+            BindBackButton();
+
             BindSaveLoad();
 
             BindLoadingCurtain();
 
             BindGameStateMachine();
+        }
+
+        private void BindStaticData()
+        {
+            Container.BindInterfacesTo<StaticDataProvider>().AsSingle();
+        }
+
+        private void BindEvents()
+        {
+            Container.BindInterfacesTo<EventBus>().AsSingle();
+        }
+
+        private void BindUI()
+        {
+            Container.BindInterfacesTo<UIFactory>().AsSingle();
+        }
+
+        private void BindBackButton()
+        {
+            Container.BindInterfacesTo<BackButtonService>().AsSingle();
+            Container.BindInterfacesAndSelfTo<MainMenuBackButtonWorker>().AsSingle();
+        }
+
+        private void BindSceneLoader()
+        {
+            Container.Bind<SceneLoader>().AsSingle();
+        }
+
+        private void BindAd()
+        {
+            Container.BindInterfacesTo<AdService>().AsSingle().NonLazy();
         }
 
         private void BindSaveLoad()

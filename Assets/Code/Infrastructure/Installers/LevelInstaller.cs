@@ -9,7 +9,6 @@ using Code.Infrastructure.GSM.StateRegistries;
 using Code.Infrastructure.GSM.States;
 using Code.Providers;
 using Code.Providers.GameObject;
-using Code.Services.BackButton;
 using Code.Services.BackButton.Workers;
 using Code.Services.BuildLevel;
 using Code.Services.Input;
@@ -85,7 +84,6 @@ namespace Code.Infrastructure.Installers
             Container.BindInterfacesAndSelfTo<DynamicBoundsProvider>().AsSingle();
             Container.BindInterfacesTo<BlocksValidationService>().AsSingle();
             Container.BindInterfacesTo<RandomBlockValueProvider>().AsSingle();
-
         }
 
         private void BindGameplayFeatures()
