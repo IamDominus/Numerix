@@ -21,8 +21,7 @@ namespace Code.Gameplay.Views
         private void Construct(IDynamicBoundsProvider dynamicBoundsProvider)
         {
             _dynamicBoundsProvider = dynamicBoundsProvider;
-            //TODO ad format
-            _text.text = Value.ToString();
+            _text.text = Value.ToString("N0");
         }
 
         public void Move(Vector2Int position)

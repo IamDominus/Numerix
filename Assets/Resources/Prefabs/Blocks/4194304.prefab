@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &3962489488118486772
+--- !u!1001 &6092552496775565852
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -22,7 +22,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5019873445021185889, guid: f8d481f14af6d6943910abf93bf6788d, type: 3}
       propertyPath: m_RootOrder
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5019873445021185889, guid: f8d481f14af6d6943910abf93bf6788d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -64,18 +64,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6043167921378558686, guid: f8d481f14af6d6943910abf93bf6788d, type: 3}
-      propertyPath: m_Color.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6043167921378558686, guid: f8d481f14af6d6943910abf93bf6788d, type: 3}
-      propertyPath: m_Color.g
-      value: 0.27058825
-      objectReference: {fileID: 0}
-    - target: {fileID: 6043167921378558686, guid: f8d481f14af6d6943910abf93bf6788d, type: 3}
-      propertyPath: m_Color.r
-      value: 0.52156866
-      objectReference: {fileID: 0}
     - target: {fileID: 6154371584124940859, guid: f8d481f14af6d6943910abf93bf6788d, type: 3}
       propertyPath: m_Name
       value: 4194304
@@ -86,11 +74,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9019056825485488171, guid: f8d481f14af6d6943910abf93bf6788d, type: 3}
       propertyPath: m_text
-      value: 16384
-      objectReference: {fileID: 0}
-    - target: {fileID: 9019056825485488171, guid: f8d481f14af6d6943910abf93bf6788d, type: 3}
-      propertyPath: m_fontSize
-      value: 4.15
+      value: 4,194,304
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_AddedGameObjects: []
