@@ -1,5 +1,7 @@
 ﻿using Code.Infrastructure.FSM;
 using Code.Views.LoadingCurtain;
+using DG.Tweening;
+using UnityEngine;
 
 namespace Code.Infrastructure.GSM.States
 {
@@ -17,6 +19,8 @@ namespace Code.Infrastructure.GSM.States
         public void Enter()
         {
             _loadingCurtainView.Show();
+            Application.targetFrameRate = 60;
+            DOTween.Init();
             _gameStateMachine.Enter<LoadGameState>();
         }
 

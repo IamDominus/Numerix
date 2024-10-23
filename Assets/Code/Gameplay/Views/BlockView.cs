@@ -28,7 +28,10 @@ namespace Code.Gameplay.Views
         {
             _isMoving = true;
             var newPosition = _dynamicBoundsProvider.GetBlockInWorldPosition(position);
-            transform.DOMove(newPosition, Constants.MOVE_ANIMATION_TIME_SEC).SetEase(Ease.InCubic).OnComplete(OnFinishedMoving);
+            transform
+                .DOMove(newPosition, Constants.MOVE_ANIMATION_TIME_SEC)
+                .SetEase(Ease.InCubic)
+                .OnComplete(OnFinishedMoving);
         }
 
         private void OnFinishedMoving()
