@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Code.Infrastructure.Factories
 {
-    public interface IGameFactory
+    public interface ILevelFactory
     {
         void CreateCell(Vector3 position, Vector2 size);
         BlockView CreateBlockView(Vector2 position, Vector2 size, double value);

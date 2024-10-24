@@ -1,4 +1,5 @@
-﻿using Code.Views;
+﻿using Code.Infrastructure.AssetLoading;
+using Code.Views;
 using Code.Views.HUD;
 using Code.Views.MainMenu;
 using UnityEngine;
@@ -13,21 +14,23 @@ namespace Code.Infrastructure.Factories
         private const string GAME_OVER_PREFAB_PATH = "UI/GameOver";
 
         private readonly DiContainer _diContainer;
+        private readonly IAssetLoader _assetLoader;
 
         private MainMenuView _mainMenuPrefab;
         private HUDView _hudPrefab;
         private GameOverView _gameOverViewPrefab;
 
-        public UIFactory(DiContainer diContainer)
+        public UIFactory(DiContainer diContainer, IAssetLoader assetLoader)
         {
             _diContainer = diContainer;
+            _assetLoader = assetLoader;
         }
 
         public void Initialize()
         {
-            _mainMenuPrefab = Resources.Load<MainMenuView>(MAIN_MENU_PREFAB_PATH);
-            _hudPrefab = Resources.Load<HUDView>(HUD_PREFAB_PATH);
-            _gameOverViewPrefab = Resources.Load<GameOverView>(GAME_OVER_PREFAB_PATH);
+            _mainMenuPrefab = _assetLoader.LoadAsset<MainMenuView>(MAIN_MENU_PREFAB_PATH);
+            _hudPrefab = _assetLoader.LoadAsset<HUDView>(HUD_PREFAB_PATH);
+            _gameOverViewPrefab = _assetLoader.LoadAsset<GameOverView>(GAME_OVER_PREFAB_PATH);
         }
 
         public MainMenuView CreateMainMenu(Transform parent)

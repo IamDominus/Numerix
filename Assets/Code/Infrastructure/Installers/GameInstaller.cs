@@ -1,4 +1,5 @@
 ﻿using Code.EventSystem;
+using Code.Infrastructure.AssetLoading;
 using Code.Infrastructure.Factories;
 using Code.Infrastructure.FSM;
 using Code.Infrastructure.GSM;
@@ -38,6 +39,13 @@ namespace Code.Infrastructure.Installers
             BindLoadingCurtain();
 
             BindGameStateMachine();
+
+            BindAssetLoader();
+        }
+
+        private void BindAssetLoader()
+        {
+            Container.BindInterfacesTo<AssetLoader>().AsSingle();
         }
 
         private void BindStaticData()

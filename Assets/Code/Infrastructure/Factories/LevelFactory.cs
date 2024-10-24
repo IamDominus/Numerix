@@ -2,33 +2,36 @@
 using System.Linq;
 using Code.Gameplay;
 using Code.Gameplay.Views;
+using Code.Infrastructure.AssetLoading;
 using Code.Providers.GameObject;
 using UnityEngine;
 using Zenject;
 
 namespace Code.Infrastructure.Factories
 {
-    public class GameFactory : IInitializable, IGameFactory
+    public class LevelFactory : IInitializable, ILevelFactory
     {
         private const string CELL_PREFAB_PATH = "Prefabs/FieldAndCell/Cell";
         private const string BLOCKS_FOLDER_PREFAB_PATH = "Prefabs/Blocks";
 
         private readonly IInstantiator _instantiator;
+        private readonly IAssetLoader _assetLoader;
         private readonly Transform _parent;
 
         private Cell _cellPrefab;
         private Dictionary<double, BlockView> _blockViews;
 
-        public GameFactory(IInstantiator instantiator, ILevelObjectsProvider levelObjectsProvider)
+        public LevelFactory(IInstantiator instantiator, ILevelObjectsProvider levelObjectsProvider, IAssetLoader assetLoader)
         {
             _instantiator = instantiator;
+            _assetLoader = assetLoader;
             _parent = levelObjectsProvider.CellsParent;
         }
 
         public void Initialize()
         {
-            _cellPrefab = Resources.Load<Cell>(CELL_PREFAB_PATH);
-            _blockViews = Resources.LoadAll<BlockView>(BLOCKS_FOLDER_PREFAB_PATH).ToDictionary(x => x.Value, x => x);
+            _cellPrefab = _assetLoader.LoadAsset<Cell>(CELL_PREFAB_PATH);
+            _blockViews = _assetLoader.LoadAllAsset<BlockView>(BLOCKS_FOLDER_PREFAB_PATH).ToDictionary(x => x.Value, x => x);
         }
 
         public void CreateCell(Vector3 position, Vector2 size)

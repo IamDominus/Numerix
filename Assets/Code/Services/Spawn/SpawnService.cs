@@ -14,15 +14,15 @@ namespace Code.Services.Spawn
     {
         private readonly IDynamicBoundsProvider _dynamicBoundsProvider;
         private readonly IBlocksProvider _blocksProvider;
-        private readonly IGameFactory _gameFactory;
+        private readonly ILevelFactory _levelFactory;
         private readonly Random _random;
         private readonly IRandomBlockValueProvider _blockValueProvider;
 
-        public SpawnService(IDynamicBoundsProvider dynamicBoundsProvider, IGameFactory gameFactory, IBlocksProvider blocksProvider, Random random,
+        public SpawnService(IDynamicBoundsProvider dynamicBoundsProvider, ILevelFactory levelFactory, IBlocksProvider blocksProvider, Random random,
             IRandomBlockValueProvider blockValueProvider)
         {
             _dynamicBoundsProvider = dynamicBoundsProvider;
-            _gameFactory = gameFactory;
+            _levelFactory = levelFactory;
             _blocksProvider = blocksProvider;
             _random = random;
             _blockValueProvider = blockValueProvider;
@@ -36,7 +36,7 @@ namespace Code.Services.Spawn
                 {
                     var position = _dynamicBoundsProvider.GetBlockInWorldPosition(x, y);
                     var size = _dynamicBoundsProvider.CellSize;
-                    _gameFactory.CreateCell(position, size);
+                    _levelFactory.CreateCell(position, size);
                 }
             }
         }
@@ -44,7 +44,7 @@ namespace Code.Services.Spawn
         public void SpawnBlock(BlockModel blockModel)
         {
             var wordPosition = _dynamicBoundsProvider.GetBlockInWorldPosition(blockModel.Position.x, blockModel.Position.y);
-            var block = _gameFactory.CreateBlock(blockModel, wordPosition, _dynamicBoundsProvider.CellSize, blockModel.Value);
+            var block = _levelFactory.CreateBlock(blockModel, wordPosition, _dynamicBoundsProvider.CellSize, blockModel.Value);
             _blocksProvider.AddBlock(block);
         }
 
@@ -61,7 +61,7 @@ namespace Code.Services.Spawn
         public BlockView SpawnBlockView(BlockModel blockModel)
         {
             var wordPosition = _dynamicBoundsProvider.GetBlockInWorldPosition(blockModel.Position.x, blockModel.Position.y);
-            return _gameFactory.CreateBlockView(wordPosition, _dynamicBoundsProvider.CellSize, blockModel.Value);
+            return _levelFactory.CreateBlockView(wordPosition, _dynamicBoundsProvider.CellSize, blockModel.Value);
         }
 
         public bool AbleToSpawnRandomBlock()

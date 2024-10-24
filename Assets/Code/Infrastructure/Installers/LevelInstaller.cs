@@ -68,7 +68,7 @@ namespace Code.Infrastructure.Installers
         private void BindObjectsCreationServices()
         {
             Container.BindInterfacesTo<SpawnService>().AsSingle();
-            Container.BindInterfacesTo<GameFactory>().AsSingle();
+            Container.BindInterfacesTo<LevelFactory>().AsSingle();
             Container.BindInterfacesTo<BuildLevelService>().AsSingle();
         }
 
